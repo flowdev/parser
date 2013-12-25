@@ -8,8 +8,8 @@ import java.util.List;
  * Created by obulbuk on 24.12.13.
  */
 public class ParserData {
-    Feedback feedback;
-    SourceData source;
-    ParseResult result;
-    List<ParseResult> subResults;
+    public Feedback feedback;
+    public SourceData source;
+    public ParseResult result;
+    public List<ParseResult> subResults;
 }
