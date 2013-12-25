@@ -1,53 +1,33 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.Getter;
-import org.flowdev.base.Setter;
-import org.flowdev.base.op.Filter;
 import org.flowdev.parser.data.ParseRegexConfig;
 import org.flowdev.parser.data.ParserData;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by obulbuk on 24.12.13.
- */
-public class ParseRegex<T> extends Filter<T, ParseRegexConfig> {
-    public static class Params<T> {
-        public Getter<T, ParserData> getParserData;
-        public Setter<ParserData, T, T> setParserData;
-    }
 
-    private Params<T> params;
+public class ParseRegex<T> extends ParseSimple<T, ParseRegexConfig> {
     private String regexStr;
     private Pattern regex;
 
     public ParseRegex(Params<T> params) {
-        this.params = params;
+        super(params);
     }
 
     @Override
-    protected void filter(T data) {
-        ParserData parserData = params.getParserData.get(data);
-        updateRegex(getVolatileConfig().regex);
-        int orgPos = parserData.source.pos;
-        String substr = parserData.source.content.substring(orgPos);
-        Matcher matcher = regex.matcher(substr);
+    public int parseSimple(String substring, ParseRegexConfig cfg, ParserData parserData) {
+        updateRegex(cfg.regex);
+        Matcher matcher = regex.matcher(substring);
         if (matcher.lookingAt()) {
-            parserData.result.pos = orgPos;
-            int start = matcher.start();
-            int end = matcher.end();
-            parserData.result.text = substr.substring(start, end);
-            parserData.result.matched = true;
-            parserData.source.pos += parserData.result.text.length();
+            return matcher.end();
         } else {
-            parserData.result.matched = false;
+            return 0;
         }
-        params.setParserData.set(data, parserData);
-        outPort.send(data);
     }
 
     private void updateRegex(String curRegex) {
+        // intentionally NOT using String.equals()!
         if (curRegex != this.regexStr) {
             this.regex = Pattern.compile(curRegex);
             this.regexStr = curRegex;
