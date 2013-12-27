@@ -3,6 +3,7 @@ package org.flowdev.parser.op;
 import org.flowdev.base.Getter;
 import org.flowdev.base.Setter;
 import org.flowdev.base.op.Filter;
+import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 
 public abstract class ParseSimple<T, C> extends Filter<T, C> {
@@ -20,6 +21,7 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
     @Override
     protected void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
+        parserData.result = new ParseResult();
         C cfg = getVolatileConfig();
         int orgPos = parserData.source.pos;
         int newPos = orgPos + parseSimple(parserData.source.content.substring(orgPos), cfg, parserData);
@@ -27,7 +29,7 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
             parserData.result.pos = orgPos;
             parserData.result.text = parserData.source.content.substring(orgPos, newPos);
             parserData.result.matched = true;
-            parserData.source.pos += newPos;
+            parserData.source.pos = newPos;
         } else {
             parserData.result.matched = false;
         }

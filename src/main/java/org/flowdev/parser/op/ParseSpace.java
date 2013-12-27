@@ -12,7 +12,7 @@ public class ParseSpace<T> extends ParseSimple<T, ParseSpaceConfig> {
     @Override
     public int parseSimple(String substring, ParseSpaceConfig cfg, ParserData parserData) {
         int idx = 0;
-        while (isSpace(substring.charAt(idx), cfg.includeNewline)) {
+        while (substring.length() > idx && isSpace(substring.charAt(idx), cfg.includeNewline)) {
             idx++;
         }
         return idx;

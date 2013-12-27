@@ -1,0 +1,38 @@
+package org.flowdev.parser.op;
+
+import org.flowdev.parser.data.ParseRegexConfig;
+import org.flowdev.parser.data.ParseResult;
+import org.flowdev.parser.data.ParserData;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Collection;
+
+import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseSimple.Params;
+
+@RunWith(Parameterized.class)
+public class ParseRegexTest extends ParseSimpleTest<ParseRegexConfig> {
+
+    @Parameterized.Parameters
+    public static Collection<?> generateTestDatas() {
+        ParseRegexConfig config = new ParseRegexConfig("[a]+");
+        return asList( //
+                makeTestData("no match", 0, "baaa", config, false, 0, null, 0, 0), //
+                makeTestData("empty", 0, "", config, false, 0, null, 0, 0), //
+                makeTestData("simple", 0, "a", config, true, 0, "a", 1, 0), //
+                makeTestData("simple 2", 0, "aaa 123", config, true, 0, "aaa", 3, 0), //
+                makeTestData("simple 3", 2, "12aaa3456", config, true, 2, "aaa", 5, 0)  //
+        );
+    }
+
+    public ParseRegexTest(ParserData parserData, ParseRegexConfig config, ParseResult expectedResult,
+                          int expectedSrcPos, int expectedErrorCount) {
+        super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
+    }
+
+    @Override
+    protected ParseSimple<ParserData, ParseRegexConfig> makeParser(Params<ParserData> params) {
+        return new ParseRegex<>(params);
+    }
+}

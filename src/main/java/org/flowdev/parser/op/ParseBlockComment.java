@@ -17,20 +17,22 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
         int pos = cfg.commentStart.length();
         int level = 1;
         int iEnd = substring.indexOf(cfg.commentEnd, pos);
-        int iBeg2 = substring.indexOf(cfg.commentStart, pos);
+        int iBeg = substring.indexOf(cfg.commentStart, pos);
         while (level > 0) {
             if (iEnd < 0) {
-                parserData.feedback.errors.add("Block comment wasn't properly ended.");
+                // TODO: Util for real error messages!
+                parserData.feedback.errors.add("Block comment wasn't closed properly.");
+                parserData.source.pos += cfg.commentStart.length();
                 return 0;
             }
-            if (iBeg2 >= 0 && iBeg2 < iEnd) {
+            if (iBeg >= 0 && iBeg < iEnd) {
                 level++;
-                pos = iBeg2 + cfg.commentStart.length();
-                iBeg2 = substring.indexOf(cfg.commentStart, pos);
+                pos = iBeg + cfg.commentStart.length();
+                iBeg = substring.indexOf(cfg.commentStart, pos);
             } else {
                 level--;
                 pos = iEnd + cfg.commentEnd.length();
-                iEnd = substring.indexOf(cfg.commentEnd);
+                iEnd = substring.indexOf(cfg.commentEnd, pos);
             }
         }
         return pos;
