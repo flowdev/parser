@@ -25,7 +25,8 @@ public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockCommentConf
                 makeTestData("simple 3", 2, "ab{[ 123 ]}cdefg", config, true, 2, "{[ 123 ]}", 11, 0), //
                 makeTestData("nested", 2, "ab{[ 1 {[ 2 ]} 3 ]}cdefg", config, true, 2, "{[ 1 {[ 2 ]} 3 ]}", 19, 0), //
                 makeTestData("nested 2", 2, "ab{[1{[2{[3\r\n4]}5]}6]}cdefg", config, true, 2, "{[1{[2{[3\r\n4]}5]}6]}", 22, 0), //
-                makeTestData("double", 2, "ab{[{[]}{[]}]}cdefg", config, true, 2, "{[{[]}{[]}]}", 14, 0) //
+                makeTestData("double", 2, "ab{[{[]}{[]}]}cdefg", config, true, 2, "{[{[]}{[]}]}", 14, 0), //
+                makeTestData("error", 2, "ab{[ 1 {[ 2 ]}cdefg", config, false, 2, null, 4, 1) //
         );
     }
 

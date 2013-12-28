@@ -61,10 +61,8 @@ ParseResult {
 
 
 Utilities:
-String SourceUtil.where(source, pos)
-String SourceUtil.substring(source, from, to)
-String SourceUtil.curLine(source) ?
-char SourceUtil.charAt(source, pos) ?
+String ParserUtil.where(source, pos)
+String ParserUtil.addError(parserData, pos, message)
 
 
 Reduced class path for generating the parser:
