@@ -24,7 +24,10 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
         parserData.result = new ParseResult();
         C cfg = getVolatileConfig();
         int orgPos = parserData.source.pos;
-        int newPos = orgPos + parseSimple(parserData.source.content.substring(orgPos), cfg, parserData);
+        int newPos = orgPos;
+        if (parserData.source.content.length() > orgPos) {
+            newPos += parseSimple(parserData.source.content.substring(orgPos), cfg, parserData);
+        }
         if (orgPos != newPos) {
             parserData.result.pos = orgPos;
             parserData.result.text = parserData.source.content.substring(orgPos, newPos);
