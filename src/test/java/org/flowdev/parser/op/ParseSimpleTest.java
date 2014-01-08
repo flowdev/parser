@@ -13,30 +13,12 @@ import static org.flowdev.parser.op.ParseSimple.Params;
 import static org.junit.Assert.assertEquals;
 
 public abstract class ParseSimpleTest<C> {
-    private ParserData parserData;
+    ParserData parserData;
     private ParseResult expectedResult;
     private int expectedSrcPos;
     private int expectedErrorCount;
     private ParseSimple<ParserData, C> parser;
-
-    public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, boolean matched, int resultPos, String resultText, int newSrcPos, int errorCount) {
-        ParserData parserData = new ParserData();
-        parserData.source = new SourceData();
-        parserData.source.name = srcName;
-        parserData.source.pos = srcPos;
-        parserData.source.content = srcContent;
-        parserData.feedback = new Feedback();
-        parserData.feedback.errors = new ArrayList<>();
-        parserData.feedback.warnings = new ArrayList<>();
-        parserData.feedback.infos = new ArrayList<>();
-
-        ParseResult parseResult = new ParseResult();
-        parseResult.matched = matched;
-        parseResult.pos = resultPos;
-        parseResult.text = resultText;
-
-        return new Object[]{parserData, config, parseResult, newSrcPos, errorCount};
-    }
+    protected boolean dontRunTests = false;
 
     public ParseSimpleTest(ParserData parserData, C config, ParseResult expectedResult, int expectedSrcPos, int expectedErrorCount) {
         this.parserData = parserData;
@@ -63,6 +45,9 @@ public abstract class ParseSimpleTest<C> {
 
     @Test
     public void testParser() {
+        if (dontRunTests) {
+            return;
+        }
         parser.getInPort().send(parserData);
         assertEquals("unexpected matched:", expectedResult.matched, parserData.result.matched);
         assertEquals("unexpected source position:", expectedSrcPos, parserData.source.pos);
@@ -71,5 +56,24 @@ public abstract class ParseSimpleTest<C> {
             assertEquals("unexpected result text:", expectedResult.text, parserData.result.text);
         }
         assertEquals("unexpected error count:", expectedErrorCount, parserData.feedback.errors.size());
+    }
+
+    public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, boolean matched, int resultPos, String resultText, int newSrcPos, int errorCount) {
+        ParserData parserData = new ParserData();
+        parserData.source = new SourceData();
+        parserData.source.name = srcName;
+        parserData.source.pos = srcPos;
+        parserData.source.content = srcContent;
+        parserData.feedback = new Feedback();
+        parserData.feedback.errors = new ArrayList<>();
+        parserData.feedback.warnings = new ArrayList<>();
+        parserData.feedback.infos = new ArrayList<>();
+
+        ParseResult parseResult = new ParseResult();
+        parseResult.matched = matched;
+        parseResult.pos = resultPos;
+        parseResult.text = resultText;
+
+        return new Object[]{parserData, config, parseResult, newSrcPos, errorCount};
     }
 }

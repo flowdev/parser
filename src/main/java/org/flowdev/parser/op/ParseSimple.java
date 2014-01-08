@@ -1,6 +1,7 @@
 package org.flowdev.parser.op;
 
 import org.flowdev.base.Getter;
+import org.flowdev.base.Port;
 import org.flowdev.base.Setter;
 import org.flowdev.base.op.Filter;
 import org.flowdev.parser.data.ParseResult;
@@ -11,6 +12,9 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
         public Getter<T, ParserData> getParserData;
         public Setter<ParserData, T, T> setParserData;
     }
+
+    private Port<T> semOutPort;
+    private Port<T> semInPort = data -> outPort.send(data);
 
     protected Params<T> params;
 
@@ -37,8 +41,26 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
             parserData.result.matched = false;
         }
         params.setParserData.set(data, parserData);
-        outPort.send(data);
+        if (semOutPort != null && parserData.result.matched) {
+            semOutPort.send(data);
+        } else {
+            outPort.send(data);
+        }
     }
 
     public abstract int parseSimple(String substring, C cfg, ParserData parserData);
+
+    /**
+     * Called during initialization phase.
+     */
+    public Port<T> getSemInPort() {
+        return semInPort;
+    }
+
+    /**
+     * Called during initialization phase.
+     */
+    public void setSemOutPort(Port<T> semOutPort) {
+        this.semOutPort = semOutPort;
+    }
 }
