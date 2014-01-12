@@ -13,8 +13,8 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
         public Setter<ParserData, T, T> setParserData;
     }
 
-    private Port<T> semOutPort;
-    private Port<T> semInPort = data -> outPort.send(data);
+    protected Port<T> semOutPort;
+    protected Port<T> semInPort = data -> outPort.send(data);
 
     protected Params<T> params;
 

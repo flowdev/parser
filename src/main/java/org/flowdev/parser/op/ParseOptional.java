@@ -1,16 +1,37 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
-import org.flowdev.parser.data.ParserData;
+import org.flowdev.base.Port;
+import org.flowdev.parser.data.ParseMultipleConfig;
 
 
-public class ParseOptional<T> extends ParseWithSingleSubOp<T, EmptyConfig> {
-    public ParseOptional(Params<T> params) {
-        super(params);
+public class ParseOptional<T> {
+    private ParseMultiple parser;
+
+    public ParseOptional() {
+        parser.getConfigPort().send(new ParseMultipleConfig(0, 1));
     }
 
-    @Override
-    public int parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
-        return 0;
+    public Port<T> getSubInPort() {
+        return parser.getSubInPort();
+    }
+
+    public void setSubOutPort(Port<T> subOutPort) {
+        parser.setSubOutPort(subOutPort);
+    }
+
+    public Port<T> getSemInPort() {
+        return parser.getSemInPort();
+    }
+
+    public void setSemOutPort(Port<T> semOutPort) {
+        parser.setSemOutPort(semOutPort);
+    }
+
+    public Port<T> getInPort() {
+        return parser.getInPort();
+    }
+
+    public void setOutPort(Port<T> outPort) {
+        parser.setOutPort(outPort);
     }
 }

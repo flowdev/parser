@@ -10,4 +10,5 @@ public class ParserData {
     public SourceData source;
     public ParseResult result;
     public List<ParseResult> subResults;
+    public List<ParserTempData> tempStack;
 }
