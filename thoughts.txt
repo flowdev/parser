@@ -31,7 +31,7 @@ ParseAnd
     [ParserData]-> (ParseAnd) -> ;
     parseAnd subOut.i [ParserData]-> subOp() -> subIn.i parseAnd() ;
     parseAnd() semOut [ParserData]-> semOp() -> semIn parseAnd() ;
-    ParseMultiple usually has own semantics (the complete text is used as fall back).
+    ParseAnd usually has own semantics (the complete text is used as fall back).
 
 ParseOr
     [ParserData]-> (ParseOr) -> ;
