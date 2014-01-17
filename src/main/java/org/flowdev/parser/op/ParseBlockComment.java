@@ -2,7 +2,8 @@ package org.flowdev.parser.op;
 
 import org.flowdev.parser.data.ParseBlockCommentConfig;
 import org.flowdev.parser.data.ParserData;
-import org.flowdev.parser.util.ParserUtil;
+
+import static org.flowdev.parser.util.ParserUtil.addError;
 
 public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig> {
     public ParseBlockComment(Params<T> params) {
@@ -21,7 +22,7 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
         int iBeg = substring.indexOf(cfg.commentStart, pos);
         while (level > 0) {
             if (iEnd < 0) {
-                ParserUtil.addError(parserData, parserData.source.pos + iBeg, "Block comment isn't closed properly.");
+                addError(parserData, parserData.source.pos + iBeg, "Block comment isn't closed properly.");
                 parserData.source.pos += cfg.commentStart.length();
                 return 0;
             }
