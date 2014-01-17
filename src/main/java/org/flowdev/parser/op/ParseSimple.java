@@ -26,19 +26,16 @@ public abstract class ParseSimple<T, C> extends Filter<T, C> {
     protected void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
         parserData.result = new ParseResult();
+        parserData.result.matched = false;
         C cfg = getVolatileConfig();
         int orgPos = parserData.source.pos;
         int newPos = orgPos;
-        if (parserData.source.content.length() > orgPos) {
-            newPos += parseSimple(parserData.source.content.substring(orgPos), cfg, parserData);
-        }
+        newPos += parseSimple(parserData.source.content.substring(orgPos), cfg, parserData);
         if (orgPos != newPos) {
             parserData.result.pos = orgPos;
             parserData.result.text = parserData.source.content.substring(orgPos, newPos);
             parserData.result.matched = true;
             parserData.source.pos = newPos;
-        } else {
-            parserData.result.matched = false;
         }
         params.setParserData.set(data, parserData);
         if (semOutPort != null && parserData.result.matched) {
