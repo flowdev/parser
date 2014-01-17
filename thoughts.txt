@@ -2,7 +2,7 @@ Parser operations:
 ===================
 
 Simple operations:
-ParseLiteral, ParseRegex, ParseSpace(inc./exc. new lines), ParseComment(line, block), ParseNatural, ParseBigIdent, ParseSmallIdent
+ParseLiteral, ParseRegex, ParseSpace(inc./exc. new lines), ParseComment(line, block), ParseNatural, ParseBigIdent, ParseSmallIdent, ParseEof
 
     [ParserData]->simpleOperation() -> ;
     simpleOperation() semOut [ParserData]-> semOp() -> semIn simpleOperation() ;
@@ -27,18 +27,18 @@ ParseMultiple(min, max)
 Base class for ParseOptional and ParseMultiple: CombineSingleParseOp
 
 
-ParseAnd
-    [ParserData]-> (ParseAnd) -> ;
-    parseAnd subOut.i [ParserData]-> subOp() -> subIn.i parseAnd() ;
-    parseAnd() semOut [ParserData]-> semOp() -> semIn parseAnd() ;
-    ParseAnd usually has own semantics (the complete text is used as fall back).
+ParseAll
+    [ParserData]-> (ParseAll) -> ;
+    parseAll subOut.i [ParserData]-> subOp() -> subIn.i parseAll() ;
+    parseAll() semOut [ParserData]-> semOp() -> semIn parseAll() ;
+    ParseAll usually has own semantics (the complete text is used as fall back).
 
-ParseOr
-    [ParserData]-> (ParseOr) -> ;
-    parseOr subOut.i [ParserData]-> subOp() -> subIn.i parseOr() ;
-    ParseOr has no own semantics!!!
+ParseAlternatives
+    [ParserData]-> (ParseAlternatives) -> ;
+    parseAlternatives subOut.i [ParserData]-> subOp() -> subIn.i parseAlternatives() ;
+    ParseAlternatives has no own semantics!!!
 
-Base class for ParseOr and ParseAnd: CombineMultipleParseOp
+Base class for ParseAlternatives and ParseAll: CombineMultipleParseOp
 
 
 ParserData {
