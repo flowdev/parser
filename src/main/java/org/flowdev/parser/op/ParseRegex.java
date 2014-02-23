@@ -6,6 +6,9 @@ import org.flowdev.parser.data.ParserData;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
+import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
+
 
 public class ParseRegex<T> extends ParseSimple<T, ParseRegexConfig> {
     private String regexStr;
@@ -16,13 +19,13 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegexConfig> {
     }
 
     @Override
-    public int parseSimple(String substring, ParseRegexConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, ParseRegexConfig cfg, ParserData parserData) {
         updateRegex(cfg.regex);
         Matcher matcher = regex.matcher(substring);
         if (matcher.lookingAt()) {
-            return matcher.end();
+            fillResultMatched(parserData, matcher.end());
         } else {
-            return 0;
+            fillResultUnmatched(parserData, 0, "Regex '" + cfg.regex + "' doesn't match.");
         }
     }
 

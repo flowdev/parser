@@ -17,10 +17,10 @@ public class ParseEofTest extends ParseSimpleTest<EmptyConfig> {
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
         return asList( //
-                makeTestData("no match", 2, "12flow345", null, false, 0, null, 2, 0), //
-                makeTestData("empty", 0, "", null, true, 0, null, 0, 0), //
-                makeTestData("simple", 4, "flow", null, true, 4, null, 4, 0), //
-                makeTestData("simple 2", 8, "flow 123", null, true, 8, null, 8, 0) //
+                makeTestData("no match", 2, "12flow345", null, 2, 0, null, 2, 0), //
+                makeTestData("empty", 0, "", null, -1, 0, null, 0, 0), //
+                makeTestData("simple", 4, "flow", null, -1, 4, null, 4, 0), //
+                makeTestData("simple 2", 8, "flow 123", null, -1, 8, null, 8, 0) //
         );
     }
 

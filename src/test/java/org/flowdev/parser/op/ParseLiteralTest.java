@@ -18,11 +18,11 @@ public class ParseLiteralTest extends ParseSimpleTest<ParseLiteralConfig> {
     public static Collection<?> generateTestDatas() {
         ParseLiteralConfig config = new ParseLiteralConfig("flow");
         return asList( //
-                makeTestData("no match", 0, " flow", config, false, 0, null, 0, 0), //
-                makeTestData("empty", 0, "", config, false, 0, null, 0, 0), //
-                makeTestData("simple", 0, "flow", config, true, 0, "flow", 4, 0), //
-                makeTestData("simple 2", 0, "flow 123", config, true, 0, "flow", 4, 0), //
-                makeTestData("simple 3", 2, "12flow345", config, true, 2, "flow", 6, 0)  //
+                makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 0), //
+                makeTestData("empty", 0, "", config, 0, 0, null, 0, 0), //
+                makeTestData("simple", 0, "flow", config, -1, 0, "flow", 4, 0), //
+                makeTestData("simple 2", 0, "flow 123", config, -1, 0, "flow", 4, 0), //
+                makeTestData("simple 3", 2, "12flow345", config, -1, 2, "flow", 6, 0)  //
         );
     }
 

@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
+import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -24,8 +25,8 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteralConfig> {
     public static Collection<?> generateTestDatas() {
         ParseLiteralConfig config = new ParseLiteralConfig("flow");
         return asList( //
-                makeTestData("no match", 0, " flow", config, false, 0, null, 0, 0), //
-                makeTestData("match", 0, "flow", config, true, 0, "flow", 4, 0) //
+                makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 0), //
+                makeTestData("match", 0, "flow", config, -1, 0, "flow", 4, 0) //
         );
     }
 
@@ -55,7 +56,7 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteralConfig> {
         dontRunTests = false;
         testParser();
         dontRunTests = true;
-        if (parserData.result.matched) {
+        if (matched(parserData.result)) {
             assertEquals("Parser did match: Semantics should have been called:", EXPECTED_SEM_OBJECT, parserData.result.value);
         } else {
             assertNull("Parser didn't match: Semantics shouldn't have been called:", parserData.result.value);

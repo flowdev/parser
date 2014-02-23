@@ -3,6 +3,9 @@ package org.flowdev.parser.op;
 import org.flowdev.base.data.EmptyConfig;
 import org.flowdev.parser.data.ParserData;
 
+import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
+import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
+
 
 public class ParseEof<T> extends ParseSimple<T, EmptyConfig> {
     public ParseEof(Params<T> params) {
@@ -10,9 +13,12 @@ public class ParseEof<T> extends ParseSimple<T, EmptyConfig> {
     }
 
     @Override
-    public int parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
-        parserData.result.matched = substring.length() == 0;
-        parserData.result.pos = parserData.source.pos;
-        return 0;
+    public void parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
+        if (substring.length() == 0) {
+            fillResultMatched(parserData, 0);
+        } else {
+            fillResultUnmatched(parserData, 0, "Expecting end of input but got " + substring.length()
+                    + " characters of input left.");
+        }
     }
 }

@@ -5,7 +5,7 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
 
-import java.util.ArrayList;
+import static org.flowdev.parser.util.ParserUtil.matched;
 
 
 public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
@@ -17,7 +17,6 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
         parserData.tempStack.add(new ParserTempData(parserData.source.pos));
-        parserData.subResults = new ArrayList<>(128);
         subOutPorts.get(0).send(data);
     }
 
@@ -26,10 +25,11 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
         long count = tempData.subResults.size();
-        if (parserData.result.matched) {
+        if (matched(parserData.result)) {
             tempData.subResults.add(parserData.result);
             count++;
             if (count >= subOutPorts.size()) {
+                // FIXME: use ParseUtil.fillResultMatched
                 parserData.result = createMatchedResult(tempData.orgSrcPos,
                         parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
                 parserData.subResults = tempData.subResults;
@@ -39,6 +39,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
                 subOutPorts.get((int) count).send(params.setParserData.set(data, parserData));
             }
         } else {
+            // FIXME: use ParseUtil.fillResultUnmatched
             parserData.result = createUnmatchedResult(tempData.orgSrcPos);
             parserData.source.pos = tempData.orgSrcPos;
             outPort.send(params.setParserData.set(data, parserData));
@@ -47,7 +48,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
 
     private static ParseResult createUnmatchedResult(int pos) {
         ParseResult result = new ParseResult();
-        result.matched = false;
+        result.errPos = pos;
         result.pos = pos;
         result.text = "";
         result.value = null;
@@ -56,7 +57,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
 
     private static ParseResult createMatchedResult(int start, String text) {
         ParseResult result = new ParseResult();
-        result.matched = true;
+        result.errPos = -1;
         result.pos = start;
         result.text = text;
         result.value = null;
@@ -64,7 +65,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
     }
 
     @Override
-    public int parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 

@@ -2,7 +2,9 @@ package org.flowdev.parser.op;
 
 import org.flowdev.parser.data.ParseNaturalConfig;
 import org.flowdev.parser.data.ParserData;
-import org.flowdev.parser.util.ParserUtil;
+
+import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
+import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
 public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
@@ -11,7 +13,7 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
     }
 
     @Override
-    public int parseSimple(String substring, ParseNaturalConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, ParseNaturalConfig cfg, ParserData parserData) {
         int i;
         for (i = 0; i < substring.length() && Character.digit(substring.charAt(i), cfg.radix) >= 0; i++) {
             // nothing to do!
@@ -19,11 +21,10 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
         if (i > 0) {
             try {
                 parserData.result.value = Long.parseUnsignedLong(substring.substring(0, i), cfg.radix);
+                fillResultMatched(parserData, i);
             } catch (NumberFormatException nfe) {
-                ParserUtil.addError(parserData, parserData.source.pos, "NumberFormatException " + nfe.getMessage());
-                i = 0;
+                fillResultUnmatched(parserData, 0, "NumberFormatException " + nfe.getMessage());
             }
         }
-        return i;
     }
 }

@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.flowdev.parser.op.ParseSimple.Params;
+import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 
 public abstract class ParseSimpleTest<C> {
@@ -49,16 +50,17 @@ public abstract class ParseSimpleTest<C> {
             return;
         }
         parser.getInPort().send(parserData);
-        assertEquals("unexpected matched:", expectedResult.matched, parserData.result.matched);
+        assertEquals("unexpected error position:", expectedResult.errPos, parserData.result.errPos);
         assertEquals("unexpected source position:", expectedSrcPos, parserData.source.pos);
-        if (expectedResult.matched) {
+        if (matched(expectedResult)) {
             assertEquals("unexpected result position:", expectedResult.pos, parserData.result.pos);
             assertEquals("unexpected result text:", expectedResult.text, parserData.result.text);
         }
         assertEquals("unexpected error count:", expectedErrorCount, parserData.feedback.errors.size());
     }
 
-    public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, boolean matched, int resultPos, String resultText, int newSrcPos, int errorCount) {
+    public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,
+                                        int resultPos, String resultText, int newSrcPos, int errorCount) {
         ParserData parserData = new ParserData();
         parserData.source = new SourceData();
         parserData.source.name = srcName;
@@ -70,7 +72,7 @@ public abstract class ParseSimpleTest<C> {
         parserData.feedback.infos = new ArrayList<>();
 
         ParseResult parseResult = new ParseResult();
-        parseResult.matched = matched;
+        parseResult.errPos = errPos;
         parseResult.pos = resultPos;
         parseResult.text = resultText;
 

@@ -7,6 +7,8 @@ import org.flowdev.parser.data.ParserTempData;
 
 import java.util.ArrayList;
 
+import static org.flowdev.parser.util.ParserUtil.matched;
+
 
 public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfig> {
     public ParseMultiple(Params<T> params) {
@@ -27,7 +29,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
         long count = tempData.subResults.size();
-        if (parserData.result.matched) {
+        if (matched(parserData.result)) {
             tempData.subResults.add(parserData.result);
             count++;
             if (count >= cfg.max) {
@@ -41,10 +43,13 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
             }
         } else {
             if (count < cfg.min) {
+                // FIXME: Use ParserUil.fillResultUnmatched
                 parserData.result = createUnmatchedResult(tempData.orgSrcPos);
                 parserData.source.pos = tempData.orgSrcPos;
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
+                // FIXME: the length of the result is missing?!
+                // FIXME: Use ParserUil.fillResultMatched
                 parserData.source.pos = parserData.result.pos;
                 parserData.result = createMatchedResult(tempData.orgSrcPos,
                         parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
@@ -56,7 +61,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
 
     private static ParseResult createUnmatchedResult(int pos) {
         ParseResult result = new ParseResult();
-        result.matched = false;
+        result.errPos = pos;
         result.pos = pos;
         result.text = "";
         result.value = null;
@@ -65,7 +70,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
 
     private static ParseResult createMatchedResult(int start, String text) {
         ParseResult result = new ParseResult();
-        result.matched = true;
+        result.errPos = -1;
         result.pos = start;
         result.text = text;
         result.value = null;
@@ -73,7 +78,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
     }
 
     @Override
-    public int parseSimple(String substring, ParseMultipleConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, ParseMultipleConfig cfg, ParserData parserData) {
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 

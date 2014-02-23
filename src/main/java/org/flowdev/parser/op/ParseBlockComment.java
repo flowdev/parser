@@ -3,7 +3,8 @@ package org.flowdev.parser.op;
 import org.flowdev.parser.data.ParseBlockCommentConfig;
 import org.flowdev.parser.data.ParserData;
 
-import static org.flowdev.parser.util.ParserUtil.addError;
+import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
+import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig> {
     public ParseBlockComment(Params<T> params) {
@@ -11,9 +12,10 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
     }
 
     @Override
-    public int parseSimple(String substring, ParseBlockCommentConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, ParseBlockCommentConfig cfg, ParserData parserData) {
         if (!substring.startsWith(cfg.commentStart)) {
-            return 0;
+            fillResultUnmatched(parserData, 0, "Block comment expected.");
+            return;
         }
 
         int pos = cfg.commentStart.length();
@@ -22,9 +24,9 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
         int iBeg = substring.indexOf(cfg.commentStart, pos);
         while (level > 0) {
             if (iEnd < 0) {
-                addError(parserData, parserData.source.pos + iBeg, "Block comment isn't closed properly.");
+                fillResultUnmatched(parserData, iBeg, "Block comment isn't closed properly.");
                 parserData.source.pos += cfg.commentStart.length();
-                return 0;
+                return;
             }
             if (iBeg >= 0 && iBeg < iEnd) {
                 level++;
@@ -36,6 +38,6 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
                 iEnd = substring.indexOf(cfg.commentEnd, pos);
             }
         }
-        return pos;
+        fillResultMatched(parserData, pos);
     }
 }

@@ -5,7 +5,7 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
 
-import java.util.ArrayList;
+import static org.flowdev.parser.util.ParserUtil.matched;
 
 
 public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
@@ -17,7 +17,6 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
         parserData.tempStack.add(new ParserTempData(parserData.source.pos));
-        parserData.subResults = new ArrayList<>(1);
         subOutPorts.get(0).send(data);
     }
 
@@ -26,11 +25,12 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(0);
         long count = tempData.index;
-        if (parserData.result.matched) {
+        if (matched(parserData.result)) {
             semOutPort.send(params.setParserData.set(data, parserData));
         } else {
             count++;
             if (count >= subOutPorts.size()) {
+                // FIXME: use ParserUtil.fillResultUnmatched
                 parserData.result = createUnmatchedResult(tempData.orgSrcPos);
                 parserData.source.pos = tempData.orgSrcPos;
                 outPort.send(params.setParserData.set(data, parserData));
@@ -43,7 +43,7 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
 
     private static ParseResult createUnmatchedResult(int pos) {
         ParseResult result = new ParseResult();
-        result.matched = false;
+        result.errPos = pos;
         result.pos = pos;
         result.text = "";
         result.value = null;
@@ -51,7 +51,7 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
     }
 
     @Override
-    public int parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 
