@@ -24,8 +24,8 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
         int iBeg = substring.indexOf(cfg.commentStart, pos);
         while (level > 0) {
             if (iEnd < 0) {
-                fillResultUnmatched(parserData, iBeg, "Block comment isn't closed properly.");
-                parserData.source.pos += cfg.commentStart.length();
+                fillResultUnmatched(parserData, pos, "Block comment isn't closed properly.");
+                parserData.source.pos += pos;
                 return;
             }
             if (iBeg >= 0 && iBeg < iEnd) {

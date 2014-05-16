@@ -56,7 +56,17 @@ public abstract class ParseSimpleTest<C> {
             assertEquals("unexpected result position:", expectedResult.pos, parserData.result.pos);
             assertEquals("unexpected result text:", expectedResult.text, parserData.result.text);
         }
-        assertEquals("unexpected error count:", expectedErrorCount, parserData.feedback.errors.size());
+        assertEquals("unexpected error count:", expectedErrorCount, getActualErrorCount(parserData));
+    }
+
+    private static int getActualErrorCount(ParserData parserData) {
+        if (parserData.result.feedback == null) {
+            return 0;
+        }
+        if (parserData.result.feedback.errors == null) {
+            return 0;
+        }
+        return parserData.result.feedback.errors.size();
     }
 
     public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,

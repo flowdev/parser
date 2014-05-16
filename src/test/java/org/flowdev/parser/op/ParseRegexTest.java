@@ -18,8 +18,8 @@ public class ParseRegexTest extends ParseSimpleTest<ParseRegexConfig> {
     public static Collection<?> generateTestDatas() {
         ParseRegexConfig config = new ParseRegexConfig("[a]+");
         return asList( //
-                makeTestData("no match", 0, "baaa", config, 0, 0, null, 0, 0), //
-                makeTestData("empty", 0, "", config, 0, 0, null, 0, 0), //
+                makeTestData("no match", 0, "baaa", config, 0, 0, null, 0, 1), //
+                makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
                 makeTestData("simple", 0, "a", config, -1, 0, "a", 1, 0), //
                 makeTestData("simple 2", 0, "aaa 123", config, -1, 0, "aaa", 3, 0), //
                 makeTestData("simple 3", 2, "12aaa3456", config, -1, 2, "aaa", 5, 0)  //

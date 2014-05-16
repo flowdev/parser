@@ -25,7 +25,7 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteralConfig> {
     public static Collection<?> generateTestDatas() {
         ParseLiteralConfig config = new ParseLiteralConfig("flow");
         return asList( //
-                makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 0), //
+                makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 1), //
                 makeTestData("match", 0, "flow", config, -1, 0, "flow", 4, 0) //
         );
     }

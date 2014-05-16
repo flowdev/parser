@@ -19,10 +19,10 @@ public class ParseSpaceTest extends ParseSimpleTest<ParseSpaceConfig> {
         ParseSpaceConfig incNlCfg = new ParseSpaceConfig(true);
         ParseSpaceConfig excNlCfg = new ParseSpaceConfig(false);
         return asList( //
-                makeTestData("no match", 0, "ba", incNlCfg, 0, 0, null, 0, 0), //
-                makeTestData("no match", 0, "ba", excNlCfg, 0, 0, null, 0, 0), //
-                makeTestData("empty", 0, "", incNlCfg, 0, 0, null, 0, 0), //
-                makeTestData("empty", 0, "", excNlCfg, 0, 0, null, 0, 0), //
+                makeTestData("no match", 0, "ba", incNlCfg, 0, 0, null, 0, 1), //
+                makeTestData("no match", 0, "ba", excNlCfg, 0, 0, null, 0, 1), //
+                makeTestData("empty", 0, "", incNlCfg, 0, 0, null, 0, 1), //
+                makeTestData("empty", 0, "", excNlCfg, 0, 0, null, 0, 1), //
                 makeTestData("simple", 0, " ", incNlCfg, -1, 0, " ", 1, 0), //
                 makeTestData("simple", 0, " ", excNlCfg, -1, 0, " ", 1, 0), //
                 makeTestData("simple 2", 0, " \t\r\n 123", incNlCfg, -1, 0, " \t\r\n ", 5, 0), //

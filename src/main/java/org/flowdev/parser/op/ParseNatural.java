@@ -25,6 +25,8 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
             } catch (NumberFormatException nfe) {
                 fillResultUnmatched(parserData, 0, "NumberFormatException " + nfe.getMessage());
             }
+        } else {
+            fillResultUnmatched(parserData, 0, "Natural number expected.");
         }
     }
 }

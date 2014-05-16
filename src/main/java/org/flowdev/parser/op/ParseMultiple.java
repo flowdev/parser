@@ -5,9 +5,7 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
 
-import java.util.ArrayList;
-
-import static org.flowdev.parser.util.ParserUtil.matched;
+import static org.flowdev.parser.util.ParserUtil.*;
 
 
 public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfig> {
@@ -19,7 +17,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
         parserData.tempStack.add(new ParserTempData(parserData.source.pos));
-        parserData.subResults = new ArrayList<>(128);
+        parserData.subResults = null;
         subOutPort.send(data);
     }
 
@@ -35,6 +33,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
             if (count >= cfg.max) {
                 parserData.result = createMatchedResult(tempData.orgSrcPos,
                         parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
+//                fillResultMatched(parserData, );
                 parserData.subResults = tempData.subResults;
                 semOutPort.send(params.setParserData.set(data, parserData));
             } else {
@@ -43,14 +42,14 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
             }
         } else {
             if (count < cfg.min) {
-                // FIXME: Use ParserUil.fillResultUnmatched
-                parserData.result = createUnmatchedResult(tempData.orgSrcPos);
+                fillResultUnmatched(parserData, parserData.source.pos, parserData.result.feedback.errors.get(0));
                 parserData.source.pos = tempData.orgSrcPos;
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
                 // FIXME: the length of the result is missing?!
                 // FIXME: Use ParserUil.fillResultMatched
                 parserData.source.pos = parserData.result.pos;
+                fillResultMatched(parserData, parserData.result.pos);
                 parserData.result = createMatchedResult(tempData.orgSrcPos,
                         parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
                 parserData.subResults = tempData.subResults;
@@ -59,14 +58,6 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
         }
     }
 
-    private static ParseResult createUnmatchedResult(int pos) {
-        ParseResult result = new ParseResult();
-        result.errPos = pos;
-        result.pos = pos;
-        result.text = "";
-        result.value = null;
-        return result;
-    }
 
     private static ParseResult createMatchedResult(int start, String text) {
         ParseResult result = new ParseResult();
