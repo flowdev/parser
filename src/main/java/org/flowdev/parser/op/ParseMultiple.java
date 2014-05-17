@@ -38,6 +38,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
         long count = tempData.subResults.size();
+
         if (matched(parserData.result)) {
             tempData.subResults.add(parserData.result);
             count++;
@@ -50,12 +51,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
             }
         } else {
             if (count < cfg.min) {
-                ParseResult result = parserData.result;
-                parserData.result = new ParseResult();
-                parserData.source.pos = tempData.orgSrcPos;
-                fillResultUnmatched(parserData, 0, result.feedback.errors.get(0));
-                parserData.result.errPos = result.errPos;
-                parserData.subResults = null;
+                createUnmatchedResult(parserData, tempData);
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
                 createMatchedResult(parserData, tempData);
@@ -85,13 +81,24 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
     }
 
     private void createMatchedResult(ParserData parserData, ParserTempData tempData) {
-        ParseResult result = new ParseResult();
-        int textLen = parserData.result.text == null ? 0 : parserData.result.text.length();
-        int len = parserData.result.pos + textLen - tempData.orgSrcPos;
+        ParseResult result = parserData.result;
+        int textLen = result.text == null ? 0 : result.text.length();
+        int len = result.pos + textLen - tempData.orgSrcPos;
+        parserData.result = new ParseResult();
         parserData.source.pos = tempData.orgSrcPos;
-        parserData.result = result;
         parserData.subResults = tempData.subResults;
+        parserData.tempStack.remove(parserData.tempStack.size() - 1);
         fillResultMatched(parserData, len);
+    }
+
+    private void createUnmatchedResult(ParserData parserData, ParserTempData tempData) {
+        ParseResult result = parserData.result;
+        parserData.result = new ParseResult();
+        parserData.source.pos = tempData.orgSrcPos;
+        parserData.subResults = null;
+        parserData.tempStack.remove(parserData.tempStack.size() - 1);
+        fillResultUnmatched(parserData, 0, result.feedback.errors.get(0));
+        parserData.result.errPos = result.errPos;
     }
 
     @Override
