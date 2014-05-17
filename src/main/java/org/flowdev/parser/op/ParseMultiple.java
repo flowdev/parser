@@ -5,17 +5,28 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.flowdev.parser.util.ParserUtil.*;
 
 
 public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfig> {
     public ParseMultiple(Params<T> params) {
         super(params);
+        semInPort = data -> {
+            ParserData parserData = params.getParserData.get(data);
+            parserData.subResults = null;
+            outPort.send(params.setParserData.set(data, parserData));
+        };
     }
 
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
+        if (parserData.tempStack == null) {
+            parserData.tempStack = new ArrayList<>(128);
+        }
         parserData.tempStack.add(new ParserTempData(parserData.source.pos));
         parserData.subResults = null;
         subOutPort.send(data);
@@ -31,41 +42,56 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
             tempData.subResults.add(parserData.result);
             count++;
             if (count >= cfg.max) {
-                parserData.result = createMatchedResult(tempData.orgSrcPos,
-                        parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
-//                fillResultMatched(parserData, );
-                parserData.subResults = tempData.subResults;
-                semOutPort.send(params.setParserData.set(data, parserData));
+                createMatchedResult(parserData, tempData);
+                handleSemantics(data, parserData);
             } else {
                 parserData.result = null;
                 subOutPort.send(params.setParserData.set(data, parserData));
             }
         } else {
             if (count < cfg.min) {
-                fillResultUnmatched(parserData, parserData.source.pos, parserData.result.feedback.errors.get(0));
+                ParseResult result = parserData.result;
+                parserData.result = new ParseResult();
                 parserData.source.pos = tempData.orgSrcPos;
+                fillResultUnmatched(parserData, 0, result.feedback.errors.get(0));
+                parserData.result.errPos = result.errPos;
+                parserData.subResults = null;
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
-                // FIXME: the length of the result is missing?!
-                // FIXME: Use ParserUil.fillResultMatched
-                parserData.source.pos = parserData.result.pos;
-                fillResultMatched(parserData, parserData.result.pos);
-                parserData.result = createMatchedResult(tempData.orgSrcPos,
-                        parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
-                parserData.subResults = tempData.subResults;
-                semOutPort.send(params.setParserData.set(data, parserData));
+                createMatchedResult(parserData, tempData);
+                handleSemantics(data, parserData);
             }
         }
     }
 
+    private void handleSemantics(T data, ParserData parserData) {
+        if (semOutPort == null) {
+            List<Object> result = new ArrayList<>(parserData.subResults.size());
+            int n = 0;
+            for (ParseResult subResult : parserData.subResults) {
+                result.add(subResult.value);
+                if (subResult.value != null) {
+                    n++;
+                }
+            }
+            if (n == 0) {
+                result = null;
+            }
+            parserData.result.value = result;
+            outPort.send(params.setParserData.set(data, parserData));
+        } else {
+            semOutPort.send(params.setParserData.set(data, parserData));
+        }
+    }
 
-    private static ParseResult createMatchedResult(int start, String text) {
+    private void createMatchedResult(ParserData parserData, ParserTempData tempData) {
         ParseResult result = new ParseResult();
-        result.errPos = -1;
-        result.pos = start;
-        result.text = text;
-        result.value = null;
-        return result;
+        int textLen = parserData.result.text == null ? 0 : parserData.result.text.length();
+        int len = parserData.result.pos + textLen - tempData.orgSrcPos;
+        parserData.source.pos = tempData.orgSrcPos;
+        parserData.result = result;
+        parserData.subResults = tempData.subResults;
+        fillResultMatched(parserData, len);
     }
 
     @Override
