@@ -23,20 +23,21 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
     @Override
     protected void handleSubOpData(T data) {
         ParserData parserData = params.getParserData.get(data);
-        ParserTempData tempData = parserData.tempStack.get(0);
-        long count = tempData.index;
+        ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
         if (matched(parserData.result)) {
+            parserData.tempStack.remove(parserData.tempStack.size() - 1);
             semOutPort.send(params.setParserData.set(data, parserData));
         } else {
-            count++;
-            if (count >= subOutPorts.size()) {
+            tempData.index++;
+            if (tempData.index >= subOutPorts.size()) {
                 // FIXME: use ParserUtil.fillResultUnmatched
                 parserData.result = createUnmatchedResult(tempData.orgSrcPos);
                 parserData.source.pos = tempData.orgSrcPos;
+                parserData.tempStack.remove(parserData.tempStack.size() - 1);
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
                 parserData.result = null;
-                subOutPorts.get((int) count).send(params.setParserData.set(data, parserData));
+                subOutPorts.get(tempData.index).send(params.setParserData.set(data, parserData));
             }
         }
     }
