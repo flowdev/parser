@@ -14,7 +14,6 @@ import static org.flowdev.parser.op.BaseParser.Params;
 
 @RunWith(Parameterized.class)
 public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleConfig> {
-    private static final String EXPECTED_SEM_OBJECT = "SemTestData!";
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
