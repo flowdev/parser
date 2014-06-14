@@ -1,13 +1,10 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.Feedback;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.SourceData;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.flowdev.parser.op.ParseSimple.Params;
 import static org.flowdev.parser.util.ParserUtil.matched;
@@ -76,10 +73,10 @@ public abstract class ParseSimpleTest<C> {
         parserData.source.name = srcName;
         parserData.source.pos = srcPos;
         parserData.source.content = srcContent;
-        parserData.feedback = new Feedback();
-        parserData.feedback.errors = new ArrayList<>();
-        parserData.feedback.warnings = new ArrayList<>();
-        parserData.feedback.infos = new ArrayList<>();
+//        parserData.feedback = new Feedback();
+//        parserData.feedback.errors = new ArrayList<>();
+//        parserData.feedback.warnings = new ArrayList<>();
+//        parserData.feedback.infos = new ArrayList<>();
 
         ParseResult parseResult = new ParseResult();
         parseResult.errPos = errPos;

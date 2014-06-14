@@ -22,7 +22,7 @@ public class ParseAlternativesTest extends ParseSimpleTest<EmptyConfig> {
                 makeTestData("empty", 0, "", null, 0, 0, null, 0, 2), //
                 makeTestData("no match", 0, " flow no", null, 0, 0, null, 0, 2), //
                 makeTestData("match flow", 0, "flowabc", null, -1, 0, "flow", 4, 0), //
-                makeTestData("match no", 3, "123noabc", null, -1, 3, "flow", 5, 0) //
+                makeTestData("match no", 3, "123noabc", null, -1, 3, "no", 5, 0) //
         );
     }
 

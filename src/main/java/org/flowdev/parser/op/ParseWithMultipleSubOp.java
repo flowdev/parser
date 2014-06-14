@@ -17,7 +17,11 @@ public abstract class ParseWithMultipleSubOp<T, C> extends ParseSimple<T, C> {
     protected abstract void handleSubOpData(T data);
 
     public void setSubOutPort(int i, Port<T> subOutPort) {
-        this.subOutPorts.set(i, subOutPort);
+        if (i == subOutPorts.size()) {
+            this.subOutPorts.add(subOutPort);
+        } else {
+            this.subOutPorts.set(i, subOutPort);
+        }
     }
 
     public Port<T> getSubInPort() {
