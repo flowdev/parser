@@ -26,6 +26,7 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
     protected void handleSubOpData(T data) {
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
+        int count = tempData.subResults.size();
         if (matched(parserData.result)) {
             parserData.tempStack.remove(parserData.tempStack.size() - 1);
             if (semOutPort != null) {
@@ -34,18 +35,16 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
                 outPort.send(params.setParserData.set(data, parserData));
             }
         } else {
-            tempData.index++;
-            if (tempData.index >= subOutPorts.size()) {
-                tempData.subResults.add(parserData.result);
+            count++;
+            tempData.subResults.add(parserData.result);
+            parserData.source.pos = tempData.orgSrcPos;
+            if (count >= subOutPorts.size()) {
                 parserData.result = mergeErrors(tempData.subResults);
-                parserData.source.pos = tempData.orgSrcPos;
                 parserData.tempStack.remove(parserData.tempStack.size() - 1);
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
-                tempData.subResults.add(parserData.result);
                 parserData.result = null;
-                parserData.source.pos = tempData.orgSrcPos;
-                subOutPorts.get(tempData.index).send(params.setParserData.set(data, parserData));
+                subOutPorts.get(count).send(params.setParserData.set(data, parserData));
             }
         }
     }

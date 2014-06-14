@@ -4,6 +4,10 @@ import org.flowdev.base.data.EmptyConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
+import org.flowdev.parser.data.SourceData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.flowdev.parser.util.ParserUtil.matched;
 
@@ -17,50 +21,49 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
         parserData.tempStack.add(new ParserTempData(parserData.source.pos));
-        subOutPorts.get(0).send(data);
+        subOutPorts.get(0).send(params.setParserData.set(data, parserData));
     }
 
     @Override
     protected void handleSubOpData(T data) {
         ParserData parserData = params.getParserData.get(data);
         ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
-        long count = tempData.subResults.size();
+        int count = tempData.subResults.size();
         if (matched(parserData.result)) {
             tempData.subResults.add(parserData.result);
             count++;
             if (count >= subOutPorts.size()) {
-                // FIXME: use ParseUtil.fillResultMatched
-                parserData.result = createMatchedResult(tempData.orgSrcPos,
-                        parserData.source.content.substring(tempData.orgSrcPos, parserData.source.pos));
-                parserData.subResults = tempData.subResults;
-                semOutPort.send(params.setParserData.set(data, parserData));
+                parserData.result = mergeResults(tempData.subResults, parserData.source);
+                parserData.tempStack.remove(parserData.tempStack.size() - 1);
+                if (semOutPort != null) {
+                    parserData.subResults = tempData.subResults;
+                    semOutPort.send(params.setParserData.set(data, parserData));
+                } else {
+                    parserData.result.value = mergeValues(tempData.subResults);
+                    outPort.send(params.setParserData.set(data, parserData));
+                }
             } else {
                 parserData.result = null;
-                subOutPorts.get((int) count).send(params.setParserData.set(data, parserData));
+                subOutPorts.get(count).send(params.setParserData.set(data, parserData));
             }
         } else {
-            // FIXME: use ParseUtil.fillResultUnmatched
-            parserData.result = createUnmatchedResult(tempData.orgSrcPos);
             parserData.source.pos = tempData.orgSrcPos;
+            parserData.tempStack.remove(parserData.tempStack.size() - 1);
             outPort.send(params.setParserData.set(data, parserData));
         }
     }
 
-    private static ParseResult createUnmatchedResult(int pos) {
-        ParseResult result = new ParseResult();
-        result.errPos = pos;
-        result.pos = pos;
-        result.text = "";
-        result.value = null;
-        return result;
+    private Object mergeValues(List<ParseResult> subResults) {
+        List<Object> allValue = new ArrayList<>(subResults.size());
+        for (ParseResult subResult : subResults) {
+            allValue.add(subResult.value);
+        }
+        return allValue;
     }
 
-    private static ParseResult createMatchedResult(int start, String text) {
-        ParseResult result = new ParseResult();
-        result.errPos = -1;
-        result.pos = start;
-        result.text = text;
-        result.value = null;
+    private ParseResult mergeResults(List<ParseResult> subResults, SourceData source) {
+        ParseResult result = subResults.get(0);
+        result.text = source.content.substring(result.pos, source.pos);
         return result;
     }
 
