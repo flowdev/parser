@@ -24,7 +24,7 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
         while (level > 0) {
             if (iEnd < 0) {
                 fillResultUnmatched(parserData, pos, "Block comment isn't closed properly.");
-                parserData.source.pos += pos;
+                parserData.getSource().setPos(parserData.getSource().getPos() + pos);
                 return;
             }
             if (iBeg >= 0 && iBeg < iEnd) {
@@ -41,12 +41,20 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
     }
 
     public static class ParseBlockCommentConfig {
-        public String commentStart;
-        public String commentEnd;
+        private String commentStart;
+        private String commentEnd;
 
         public ParseBlockCommentConfig(String commentStart, String commentEnd) {
             this.commentStart = commentStart;
             this.commentEnd = commentEnd;
+        }
+
+        public String getCommentStart() {
+            return commentStart;
+        }
+
+        public String getCommentEnd() {
+            return commentEnd;
         }
     }
 }

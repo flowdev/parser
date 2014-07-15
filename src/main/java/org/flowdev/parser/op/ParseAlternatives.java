@@ -18,17 +18,17 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.tempStack.add(new ParserTempData(parserData.source.pos));
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
         subOutPorts.get(0).send(params.setParserData.set(data, parserData));
     }
 
     @Override
     protected void handleSubOpData(T data) {
         ParserData parserData = params.getParserData.get(data);
-        ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
-        int count = tempData.subResults.size();
-        if (matched(parserData.result)) {
-            parserData.tempStack.remove(parserData.tempStack.size() - 1);
+        ParserTempData tempData = parserData.getTempStack().get(parserData.getTempStack().size() - 1);
+        int count = tempData.getSubResults().size();
+        if (matched(parserData.getResult())) {
+            parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
             if (semOutPort != null) {
                 semOutPort.send(params.setParserData.set(data, parserData));
             } else {
@@ -36,14 +36,14 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
             }
         } else {
             count++;
-            tempData.subResults.add(parserData.result);
-            parserData.source.pos = tempData.orgSrcPos;
+            tempData.getSubResults().add(parserData.getResult());
+            parserData.getSource().setPos(tempData.getOrgSrcPos());
             if (count >= subOutPorts.size()) {
-                parserData.result = mergeErrors(tempData.subResults);
-                parserData.tempStack.remove(parserData.tempStack.size() - 1);
+                parserData.setResult(mergeErrors(tempData.getSubResults()));
+                parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
-                parserData.result = null;
+                parserData.setResult(null);
                 subOutPorts.get(count).send(params.setParserData.set(data, parserData));
             }
         }
@@ -52,12 +52,12 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     private static ParseResult mergeErrors(List<ParseResult> errors) {
         ParseResult result = null;
         for (ParseResult err : errors) {
-            if (result == null || result.errPos < err.errPos) {
+            if (result == null || result.getErrPos() < err.getErrPos()) {
                 result = err;
             } else {
-                result.feedback.getInfos().addAll(err.feedback.getInfos());
-                result.feedback.getWarnings().addAll(err.feedback.getWarnings());
-                result.feedback.getErrors().addAll(err.feedback.getErrors());
+                result.getFeedback().getInfos().addAll(err.getFeedback().getInfos());
+                result.getFeedback().getWarnings().addAll(err.getFeedback().getWarnings());
+                result.getFeedback().getErrors().addAll(err.getFeedback().getErrors());
             }
         }
         return result;

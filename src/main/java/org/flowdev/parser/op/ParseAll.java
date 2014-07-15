@@ -20,35 +20,35 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.tempStack.add(new ParserTempData(parserData.source.pos));
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
         subOutPorts.get(0).send(params.setParserData.set(data, parserData));
     }
 
     @Override
     protected void handleSubOpData(T data) {
         ParserData parserData = params.getParserData.get(data);
-        ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
-        int count = tempData.subResults.size();
-        if (matched(parserData.result)) {
-            tempData.subResults.add(parserData.result);
+        ParserTempData tempData = parserData.getTempStack().get(parserData.getTempStack().size() - 1);
+        int count = tempData.getSubResults().size();
+        if (matched(parserData.getResult())) {
+            tempData.getSubResults().add(parserData.getResult());
             count++;
             if (count >= subOutPorts.size()) {
-                parserData.result = mergeResults(tempData.subResults, parserData.source);
-                parserData.tempStack.remove(parserData.tempStack.size() - 1);
+                parserData.setResult(mergeResults(tempData.getSubResults(), parserData.getSource()));
+                parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
                 if (semOutPort != null) {
-                    parserData.subResults = tempData.subResults;
+                    parserData.setSubResults(tempData.getSubResults());
                     semOutPort.send(params.setParserData.set(data, parserData));
                 } else {
-                    parserData.result.value = mergeValues(tempData.subResults);
+                    parserData.getResult().setValue(mergeValues(tempData.getSubResults()));
                     outPort.send(params.setParserData.set(data, parserData));
                 }
             } else {
-                parserData.result = null;
+                parserData.setResult(null);
                 subOutPorts.get(count).send(params.setParserData.set(data, parserData));
             }
         } else {
-            parserData.source.pos = tempData.orgSrcPos;
-            parserData.tempStack.remove(parserData.tempStack.size() - 1);
+            parserData.getSource().setPos(tempData.getOrgSrcPos());
+            parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
             outPort.send(params.setParserData.set(data, parserData));
         }
     }
@@ -56,14 +56,14 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     private Object mergeValues(List<ParseResult> subResults) {
         List<Object> allValue = new ArrayList<>(subResults.size());
         for (ParseResult subResult : subResults) {
-            allValue.add(subResult.value);
+            allValue.add(subResult.getValue());
         }
         return allValue;
     }
 
     private ParseResult mergeResults(List<ParseResult> subResults, SourceData source) {
         ParseResult result = subResults.get(0);
-        result.text = source.content.substring(result.pos, source.pos);
+        result.setText(source.getContent().substring(result.getPos(), source.getPos()));
         return result;
     }
 

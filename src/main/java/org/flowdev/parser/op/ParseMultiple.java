@@ -15,7 +15,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         super(params);
         semInPort = data -> {
             ParserData parserData = params.getParserData.get(data);
-            parserData.subResults = null;
+            parserData.setSubResults(null);
             outPort.send(params.setParserData.set(data, parserData));
         };
     }
@@ -23,11 +23,11 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        if (parserData.tempStack == null) {
-            parserData.tempStack = new ArrayList<>(128);
+        if (parserData.getTempStack() == null) {
+            parserData.setTempStack(new ArrayList<>(128));
         }
-        parserData.tempStack.add(new ParserTempData(parserData.source.pos));
-        parserData.subResults = null;
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
+        parserData.setSubResults(null);
         subOutPort.send(data);
     }
 
@@ -35,21 +35,21 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     protected void handleSubOpData(T data) {
         final ParseMultipleConfig cfg = getVolatileConfig();
         ParserData parserData = params.getParserData.get(data);
-        ParserTempData tempData = parserData.tempStack.get(parserData.tempStack.size() - 1);
-        long count = tempData.subResults.size();
+        ParserTempData tempData = parserData.getTempStack().get(parserData.getTempStack().size() - 1);
+        long count = tempData.getSubResults().size();
 
-        if (matched(parserData.result)) {
-            tempData.subResults.add(parserData.result);
+        if (matched(parserData.getResult())) {
+            tempData.getSubResults().add(parserData.getResult());
             count++;
-            if (count >= cfg.max) {
+            if (count >= cfg.getMax()) {
                 createMatchedResult(parserData, tempData);
                 handleSemantics(data, parserData);
             } else {
-                parserData.result = null;
+                parserData.setResult(null);
                 subOutPort.send(params.setParserData.set(data, parserData));
             }
         } else {
-            if (count < cfg.min) {
+            if (count < cfg.getMin()) {
                 createUnmatchedResult(parserData, tempData);
                 outPort.send(params.setParserData.set(data, parserData));
             } else {
@@ -61,18 +61,18 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
 
     private void handleSemantics(T data, ParserData parserData) {
         if (semOutPort == null) {
-            List<Object> result = new ArrayList<>(parserData.subResults.size());
+            List<Object> result = new ArrayList<>(parserData.getSubResults().size());
             int n = 0;
-            for (ParseResult subResult : parserData.subResults) {
-                result.add(subResult.value);
-                if (subResult.value != null) {
+            for (ParseResult subResult : parserData.getSubResults()) {
+                result.add(subResult.getValue());
+                if (subResult.getValue() != null) {
                     n++;
                 }
             }
             if (n == 0) {
                 result = null;
             }
-            parserData.result.value = result;
+            parserData.getResult().setValue(result);
             outPort.send(params.setParserData.set(data, parserData));
         } else {
             semOutPort.send(params.setParserData.set(data, parserData));
@@ -80,24 +80,25 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     }
 
     private void createMatchedResult(ParserData parserData, ParserTempData tempData) {
-        ParseResult result = parserData.result;
-        int textLen = result.text == null ? 0 : result.text.length();
-        int len = result.pos + textLen - tempData.orgSrcPos;
-        parserData.result = new ParseResult();
-        parserData.source.pos = tempData.orgSrcPos;
-        parserData.subResults = tempData.subResults;
-        parserData.tempStack.remove(parserData.tempStack.size() - 1);
+        ParseResult result = parserData.getResult();
+        int textLen = result.getText() == null ? 0 : result.getText().length();
+        int len = result.getPos() + textLen - tempData.getOrgSrcPos();
+
+        parserData.setResult(new ParseResult());
+        parserData.getSource().setPos(tempData.getOrgSrcPos());
+        parserData.setSubResults(tempData.getSubResults());
+        parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
         fillResultMatched(parserData, len);
     }
 
     private void createUnmatchedResult(ParserData parserData, ParserTempData tempData) {
-        ParseResult result = parserData.result;
-        parserData.result = new ParseResult();
-        parserData.source.pos = tempData.orgSrcPos;
-        parserData.subResults = null;
-        parserData.tempStack.remove(parserData.tempStack.size() - 1);
-        fillResultUnmatched(parserData, 0, result.feedback.getErrors().get(0));
-        parserData.result.errPos = result.errPos;
+        ParseResult result = parserData.getResult();
+        parserData.setResult(new ParseResult());
+        parserData.getSource().setPos(tempData.getOrgSrcPos());
+        parserData.setSubResults(null);
+        parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
+        fillResultUnmatched(parserData, 0, result.getFeedback().getErrors().get(0));
+        parserData.getResult().setErrPos(result.getErrPos());
     }
 
     @Override
@@ -106,12 +107,20 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     }
 
     public static class ParseMultipleConfig {
-        public int min;
-        public int max;
+        private int min;
+        private int max;
 
         public ParseMultipleConfig(int min, int max) {
             this.min = min;
             this.max = max;
+        }
+
+        public int getMin() {
+            return min;
+        }
+
+        public int getMax() {
+            return max;
         }
     }
 }

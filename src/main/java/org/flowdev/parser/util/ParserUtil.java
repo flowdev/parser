@@ -9,33 +9,35 @@ import java.util.ArrayList;
 
 public abstract class ParserUtil {
     public static void fillResultMatched(ParserData parserData, int len) {
-        ParseResult result = parserData.result;
-        result.errPos = -1;
-        result.pos = parserData.source.pos;
-        result.text = parserData.source.content.substring(result.pos, result.pos + len);
-        parserData.source.pos += len;
+        ParseResult result = parserData.getResult();
+        int srcPos = parserData.getSource().getPos();
+
+        result.setErrPos(-1);
+        result.setPos(srcPos);
+        result.setText(parserData.getSource().getContent().substring(result.getPos(), result.getPos() + len));
+        parserData.getSource().setPos(srcPos + len);
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
-        ParseResult result = parserData.result;
-        result.errPos = parserData.source.pos + pos;
-        result.pos = parserData.source.pos;
-        result.text = null;
-        if (result.feedback == null) {
-            result.feedback = new Feedback();
+        ParseResult result = parserData.getResult();
+        result.setErrPos(parserData.getSource().getPos() + pos);
+        result.setPos(parserData.getSource().getPos());
+        result.setText(null);
+        if (result.getFeedback() == null) {
+            result.setFeedback(new Feedback());
         }
-        if (result.feedback.getErrors() == null) {
-            result.feedback.setErrors(new ArrayList<>());
+        if (result.getFeedback().getErrors() == null) {
+            result.getFeedback().setErrors(new ArrayList<>());
         }
-        result.feedback.getErrors().add(message);
+        result.getFeedback().getErrors().add(message);
     }
 
     public static String where(SourceData source, int pos) {
-        if (pos >= source.wherePrevNl) {
+        if (pos >= source.getWherePrevNl()) {
             return whereForward(source, pos);
-        } else if (pos <= source.wherePrevNl - pos) {
-            source.whereLine = 1;
-            source.wherePrevNl = -1;
+        } else if (pos <= source.getWherePrevNl() - pos) {
+            source.setWhereLine(1);
+            source.setWherePrevNl(-1);
             return whereForward(source, pos);
         } else {
             return whereBackward(source, pos);
@@ -44,9 +46,9 @@ public abstract class ParserUtil {
 
     private static String whereForward(SourceData source, int pos) {
         String where = null;
-        String text = source.content;
-        int lineNum = source.whereLine;   // Line number
-        int prevNl = source.wherePrevNl;  // Line start (position of preceding newline)
+        String text = source.getContent();
+        int lineNum = source.getWhereLine();   // Line number
+        int prevNl = source.getWherePrevNl();  // Line start (position of preceding newline)
         int nextNl;   // Position of next newline or end
 
         while (where == null) {
@@ -63,10 +65,10 @@ public abstract class ParserUtil {
 
     private static String whereBackward(SourceData source, int pos) {
         String where = null;
-        String text = source.content;
-        int lineNum = source.whereLine;   // Line number
+        String text = source.getContent();
+        int lineNum = source.getWhereLine();   // Line number
         int prevNl;  // Line start (position of preceding newline)
-        int nextNl = source.wherePrevNl;   // Position of next newline or end
+        int nextNl = source.getWherePrevNl();   // Position of next newline or end
 
         while (where == null) {
             prevNl = text.lastIndexOf('\n', nextNl - 1);
@@ -79,12 +81,12 @@ public abstract class ParserUtil {
 
     private static String tryWhere(SourceData source, int prevNl, int pos, int nextNl, int lineNum) {
         if (prevNl < pos && pos <= nextNl) {
-            source.wherePrevNl = prevNl;
-            source.whereLine = lineNum;
-            return generateWhereMessage(source.name, lineNum, pos - prevNl,
-                    source.content.substring(prevNl + 1, nextNl));
+            source.setWherePrevNl(prevNl);
+            source.setWhereLine(lineNum);
+            return generateWhereMessage(source.getName(), lineNum, pos - prevNl,
+                    source.getContent().substring(prevNl + 1, nextNl));
         } else if (prevNl >= nextNl) {
-            return "ERROR: Unable to find position " + pos + " in file: " + source.name;
+            return "ERROR: Unable to find position " + pos + " in file: " + source.getName();
         }
         return null;
     }
@@ -94,6 +96,6 @@ public abstract class ParserUtil {
     }
 
     public static boolean matched(ParseResult result) {
-        return result.errPos < 0;
+        return result.getErrPos() < 0;
     }
 }

@@ -13,13 +13,13 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
     @Override
     protected void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.result = new ParseResult();
+        parserData.setResult(new ParseResult());
         C cfg = getVolatileConfig();
 
-        parseSimple(parserData.source.content.substring(parserData.source.pos), cfg, parserData);
+        parseSimple(parserData.getSource().getContent().substring(parserData.getSource().getPos()), cfg, parserData);
 
         params.setParserData.set(data, parserData);
-        if (semOutPort != null && matched(parserData.result)) {
+        if (semOutPort != null && matched(parserData.getResult())) {
             semOutPort.send(data);
         } else {
             outPort.send(data);

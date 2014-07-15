@@ -20,7 +20,7 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
         }
         if (i > 0) {
             try {
-                parserData.result.value = Long.parseUnsignedLong(substring.substring(0, i), cfg.radix);
+                parserData.getResult().setValue(Long.parseUnsignedLong(substring.substring(0, i), cfg.radix));
                 fillResultMatched(parserData, i);
             } catch (NumberFormatException nfe) {
                 fillResultUnmatched(parserData, 0, "NumberFormatException " + nfe.getMessage());
