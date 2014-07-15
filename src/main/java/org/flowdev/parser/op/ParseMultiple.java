@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseMultipleConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
@@ -11,7 +10,7 @@ import java.util.List;
 import static org.flowdev.parser.util.ParserUtil.*;
 
 
-public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfig> {
+public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.ParseMultipleConfig> {
     public ParseMultiple(Params<T> params) {
         super(params);
         semInPort = data -> {
@@ -97,7 +96,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
         parserData.source.pos = tempData.orgSrcPos;
         parserData.subResults = null;
         parserData.tempStack.remove(parserData.tempStack.size() - 1);
-        fillResultUnmatched(parserData, 0, result.feedback.errors.get(0));
+        fillResultUnmatched(parserData, 0, result.feedback.getErrors().get(0));
         parserData.result.errPos = result.errPos;
     }
 
@@ -106,4 +105,13 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultipleConfi
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 
+    public static class ParseMultipleConfig {
+        public int min;
+        public int max;
+
+        public ParseMultipleConfig(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+    }
 }

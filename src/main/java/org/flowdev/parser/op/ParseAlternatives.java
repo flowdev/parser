@@ -1,6 +1,6 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
+import org.flowdev.base.data.NoConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
@@ -10,7 +10,7 @@ import java.util.List;
 import static org.flowdev.parser.util.ParserUtil.matched;
 
 
-public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
+public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     public ParseAlternatives(Params<T> params) {
         super(params);
     }
@@ -55,16 +55,16 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, EmptyConfig>
             if (result == null || result.errPos < err.errPos) {
                 result = err;
             } else {
-                result.feedback.infos.addAll(err.feedback.infos);
-                result.feedback.warnings.addAll(err.feedback.warnings);
-                result.feedback.errors.addAll(err.feedback.errors);
+                result.feedback.getInfos().addAll(err.feedback.getInfos());
+                result.feedback.getWarnings().addAll(err.feedback.getWarnings());
+                result.feedback.getErrors().addAll(err.feedback.getErrors());
             }
         }
         return result;
     }
 
     @Override
-    public void parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, NoConfig cfg, ParserData parserData) {
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 

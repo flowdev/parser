@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseBlockCommentConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -12,11 +11,11 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
-public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockCommentConfig> {
+public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockComment.ParseBlockCommentConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseBlockCommentConfig config = new ParseBlockCommentConfig("{[", "]}");
+        ParseBlockComment.ParseBlockCommentConfig config = new ParseBlockComment.ParseBlockCommentConfig("{[", "]}");
         return asList( //
                 makeTestData("no match", 0, " 123 ", config, 0, 0, null, 0, 1), //
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
@@ -30,13 +29,13 @@ public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockCommentConf
         );
     }
 
-    public ParseBlockCommentTest(ParserData parserData, ParseBlockCommentConfig config, ParseResult expectedResult,
+    public ParseBlockCommentTest(ParserData parserData, ParseBlockComment.ParseBlockCommentConfig config, ParseResult expectedResult,
                                  int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseBlockCommentConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseBlockComment.ParseBlockCommentConfig> makeParser(Params<ParserData> params) {
         return new ParseBlockComment<>(params);
     }
 }

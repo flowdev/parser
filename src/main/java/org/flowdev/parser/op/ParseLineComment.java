@@ -1,13 +1,12 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseLineCommentConfig;
 import org.flowdev.parser.data.ParserData;
 
 import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
 import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
-public class ParseLineComment<T> extends ParseSimple<T, ParseLineCommentConfig> {
+public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLineCommentConfig> {
     public ParseLineComment(Params<T> params) {
         super(params);
     }
@@ -21,5 +20,13 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineCommentConfig> 
 
         int idx = substring.indexOf('\n');
         fillResultMatched(parserData, idx >= 0 ? idx : substring.length());
+    }
+
+    public static class ParseLineCommentConfig {
+        public String commentStart;
+
+        public ParseLineCommentConfig(String commentStart) {
+            this.commentStart = commentStart;
+        }
     }
 }

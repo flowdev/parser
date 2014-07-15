@@ -1,7 +1,6 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
-import org.flowdev.parser.data.ParseLiteralConfig;
+import org.flowdev.base.data.NoConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -13,7 +12,7 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.BaseParser.Params;
 
 @RunWith(Parameterized.class)
-public class ParseAlternativesTest extends ParseSimpleTest<EmptyConfig> {
+public class ParseAlternativesTest extends ParseSimpleTest<NoConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
@@ -26,18 +25,18 @@ public class ParseAlternativesTest extends ParseSimpleTest<EmptyConfig> {
         );
     }
 
-    public ParseAlternativesTest(ParserData parserData, EmptyConfig config, ParseResult expectedResult,
+    public ParseAlternativesTest(ParserData parserData, NoConfig config, ParseResult expectedResult,
                                  int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, EmptyConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, NoConfig> makeParser(Params<ParserData> params) {
         ParseLiteral<ParserData> parseLiteralFlow = new ParseLiteral<>(params);
-        parseLiteralFlow.getConfigPort().send(new ParseLiteralConfig("flow"));
+        parseLiteralFlow.getConfigPort().send(new ParseLiteral.ParseLiteralConfig("flow"));
 
         ParseLiteral<ParserData> parseLiteralNo = new ParseLiteral<>(params);
-        parseLiteralNo.getConfigPort().send(new ParseLiteralConfig("no"));
+        parseLiteralNo.getConfigPort().send(new ParseLiteral.ParseLiteralConfig("no"));
 
         ParseAlternatives<ParserData> parseAlternatives = new ParseAlternatives<>(params);
         parseAlternatives.setSubOutPort(0, parseLiteralFlow.getInPort());

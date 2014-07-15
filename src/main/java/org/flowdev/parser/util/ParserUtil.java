@@ -24,10 +24,10 @@ public abstract class ParserUtil {
         if (result.feedback == null) {
             result.feedback = new Feedback();
         }
-        if (result.feedback.errors == null) {
-            result.feedback.errors = new ArrayList<>();
+        if (result.feedback.getErrors() == null) {
+            result.feedback.setErrors(new ArrayList<>());
         }
-        result.feedback.errors.add(message);
+        result.feedback.getErrors().add(message);
     }
 
     public static String where(SourceData source, int pos) {
@@ -92,6 +92,7 @@ public abstract class ParserUtil {
     static String generateWhereMessage(String name, int line, int col, String srcLine) {
         return ("File " + name + ", line " + line + ", column " + col + ":\n" + srcLine + "\n");
     }
+
     public static boolean matched(ParseResult result) {
         return result.errPos < 0;
     }

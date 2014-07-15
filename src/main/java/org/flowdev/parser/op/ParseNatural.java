@@ -1,13 +1,12 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseNaturalConfig;
 import org.flowdev.parser.data.ParserData;
 
 import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
 import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
-public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
+public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalConfig> {
     public ParseNatural(Params<T> params) {
         super(params);
     }
@@ -15,6 +14,7 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
     @Override
     public void parseSimple(String substring, ParseNaturalConfig cfg, ParserData parserData) {
         int i;
+        //noinspection StatementWithEmptyBody
         for (i = 0; i < substring.length() && Character.digit(substring.charAt(i), cfg.radix) >= 0; i++) {
             // nothing to do!
         }
@@ -27,6 +27,14 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNaturalConfig> {
             }
         } else {
             fillResultUnmatched(parserData, 0, "Natural number expected.");
+        }
+    }
+
+    public static class ParseNaturalConfig {
+        public int radix;
+
+        public ParseNaturalConfig(int r) {
+            this.radix = r;
         }
     }
 }

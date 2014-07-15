@@ -1,7 +1,6 @@
 package org.flowdev.parser.op;
 
 import org.flowdev.parser.data.ParseResult;
-import org.flowdev.parser.data.ParseSpaceConfig;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -12,12 +11,12 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
-public class ParseSpaceTest extends ParseSimpleTest<ParseSpaceConfig> {
+public class ParseSpaceTest extends ParseSimpleTest<ParseSpace.ParseSpaceConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseSpaceConfig incNlCfg = new ParseSpaceConfig(true);
-        ParseSpaceConfig excNlCfg = new ParseSpaceConfig(false);
+        ParseSpace.ParseSpaceConfig incNlCfg = new ParseSpace.ParseSpaceConfig(true);
+        ParseSpace.ParseSpaceConfig excNlCfg = new ParseSpace.ParseSpaceConfig(false);
         return asList( //
                 makeTestData("no match", 0, "ba", incNlCfg, 0, 0, null, 0, 1), //
                 makeTestData("no match", 0, "ba", excNlCfg, 0, 0, null, 0, 1), //
@@ -32,13 +31,13 @@ public class ParseSpaceTest extends ParseSimpleTest<ParseSpaceConfig> {
         );
     }
 
-    public ParseSpaceTest(ParserData parserData, ParseSpaceConfig config, ParseResult expectedResult,
+    public ParseSpaceTest(ParserData parserData, ParseSpace.ParseSpaceConfig config, ParseResult expectedResult,
                           int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseSpaceConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseSpace.ParseSpaceConfig> makeParser(Params<ParserData> params) {
         return new ParseSpace<>(params);
     }
 }

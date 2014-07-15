@@ -1,7 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseMultipleConfig;
-
 
 public class ParseOptional<T> extends ParseMultiple<T> {
     public ParseOptional(Params<T> params) {

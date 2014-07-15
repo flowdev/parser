@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.flowdev</groupId>
     <artifactId>parser</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>parser</name>
     <description>modular parser library for and with flowdev</description>
 
@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.flowdev</groupId>
             <artifactId>base</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

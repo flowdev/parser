@@ -1,7 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseLiteralConfig;
-import org.flowdev.parser.data.ParseMultipleConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -13,14 +11,14 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.BaseParser.Params;
 
 @RunWith(Parameterized.class)
-public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleConfig> {
+public class ParseMultipleTest extends ParseSimpleTest<ParseMultiple.ParseMultipleConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseMultipleConfig config0_1 = new ParseMultipleConfig(0, 1);
-        ParseMultipleConfig config0_n = new ParseMultipleConfig(0, Integer.MAX_VALUE);
-        ParseMultipleConfig config1_n = new ParseMultipleConfig(1, Integer.MAX_VALUE);
-        ParseMultipleConfig config2_3 = new ParseMultipleConfig(2, 3);
+        ParseMultiple.ParseMultipleConfig config0_1 = new ParseMultiple.ParseMultipleConfig(0, 1);
+        ParseMultiple.ParseMultipleConfig config0_n = new ParseMultiple.ParseMultipleConfig(0, Integer.MAX_VALUE);
+        ParseMultiple.ParseMultipleConfig config1_n = new ParseMultiple.ParseMultipleConfig(1, Integer.MAX_VALUE);
+        ParseMultiple.ParseMultipleConfig config2_3 = new ParseMultiple.ParseMultipleConfig(2, 3);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
                 makeTestData("0-1: no match", 0, " flow", config0_1, -1, 0, "", 0, 0), //
@@ -40,14 +38,14 @@ public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleConfig> {
         );
     }
 
-    public ParseMultipleTest(ParserData parserData, ParseMultipleConfig config, ParseResult expectedResult,
+    public ParseMultipleTest(ParserData parserData, ParseMultiple.ParseMultipleConfig config, ParseResult expectedResult,
                              int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseMultipleConfig> makeParser(Params<ParserData> params) {
-        ParseLiteralConfig literalConfig = new ParseLiteralConfig("flow");
+    protected ParseSimple<ParserData, ParseMultiple.ParseMultipleConfig> makeParser(Params<ParserData> params) {
+        ParseLiteral.ParseLiteralConfig literalConfig = new ParseLiteral.ParseLiteralConfig("flow");
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         parseLiteral.getConfigPort().send(literalConfig);
 

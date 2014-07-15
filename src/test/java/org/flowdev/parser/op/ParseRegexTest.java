@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseRegexConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -12,11 +11,11 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
-public class ParseRegexTest extends ParseSimpleTest<ParseRegexConfig> {
+public class ParseRegexTest extends ParseSimpleTest<ParseRegex.ParseRegexConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseRegexConfig config = new ParseRegexConfig("[a]+");
+        ParseRegex.ParseRegexConfig config = new ParseRegex.ParseRegexConfig("[a]+");
         return asList( //
                 makeTestData("no match", 0, "baaa", config, 0, 0, null, 0, 1), //
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
@@ -26,13 +25,13 @@ public class ParseRegexTest extends ParseSimpleTest<ParseRegexConfig> {
         );
     }
 
-    public ParseRegexTest(ParserData parserData, ParseRegexConfig config, ParseResult expectedResult,
+    public ParseRegexTest(ParserData parserData, ParseRegex.ParseRegexConfig config, ParseResult expectedResult,
                           int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseRegexConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseRegex.ParseRegexConfig> makeParser(Params<ParserData> params) {
         return new ParseRegex<>(params);
     }
 }

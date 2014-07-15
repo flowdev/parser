@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseRegexConfig;
 import org.flowdev.parser.data.ParserData;
 
 import java.util.regex.Matcher;
@@ -10,7 +9,7 @@ import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
 import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
-public class ParseRegex<T> extends ParseSimple<T, ParseRegexConfig> {
+public class ParseRegex<T> extends ParseSimple<T, ParseRegex.ParseRegexConfig> {
     private String regexStr;
     private Pattern regex;
 
@@ -34,6 +33,14 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegexConfig> {
         if (curRegex != this.regexStr) {
             this.regex = Pattern.compile(curRegex);
             this.regexStr = curRegex;
+        }
+    }
+
+    public static class ParseRegexConfig {
+        public String regex;
+
+        public ParseRegexConfig(String regex) {
+            this.regex = regex;
         }
     }
 }

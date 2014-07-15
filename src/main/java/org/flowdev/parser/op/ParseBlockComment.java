@@ -1,12 +1,11 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseBlockCommentConfig;
 import org.flowdev.parser.data.ParserData;
 
 import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
 import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
-public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig> {
+public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.ParseBlockCommentConfig> {
     public ParseBlockComment(Params<T> params) {
         super(params);
     }
@@ -39,5 +38,15 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockCommentConfig
             }
         }
         fillResultMatched(parserData, pos);
+    }
+
+    public static class ParseBlockCommentConfig {
+        public String commentStart;
+        public String commentEnd;
+
+        public ParseBlockCommentConfig(String commentStart, String commentEnd) {
+            this.commentStart = commentStart;
+            this.commentEnd = commentEnd;
+        }
     }
 }

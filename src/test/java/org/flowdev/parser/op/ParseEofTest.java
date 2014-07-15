@@ -1,6 +1,6 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
+import org.flowdev.base.data.NoConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
-public class ParseEofTest extends ParseSimpleTest<EmptyConfig> {
+public class ParseEofTest extends ParseSimpleTest<NoConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
@@ -24,13 +24,13 @@ public class ParseEofTest extends ParseSimpleTest<EmptyConfig> {
         );
     }
 
-    public ParseEofTest(ParserData parserData, EmptyConfig config, ParseResult expectedResult,
+    public ParseEofTest(ParserData parserData, NoConfig config, ParseResult expectedResult,
                         int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, EmptyConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, NoConfig> makeParser(Params<ParserData> params) {
         return new ParseEof<>(params);
     }
 }

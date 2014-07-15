@@ -1,6 +1,6 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
+import org.flowdev.base.data.NoConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
@@ -12,7 +12,7 @@ import java.util.List;
 import static org.flowdev.parser.util.ParserUtil.matched;
 
 
-public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
+public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     public ParseAll(Params<T> params) {
         super(params);
     }
@@ -68,7 +68,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, EmptyConfig> {
     }
 
     @Override
-    public void parseSimple(String substring, EmptyConfig cfg, ParserData parserData) {
+    public void parseSimple(String substring, NoConfig cfg, ParserData parserData) {
         throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 

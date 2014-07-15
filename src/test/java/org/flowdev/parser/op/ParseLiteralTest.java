@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.parser.data.ParseLiteralConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.runner.RunWith;
@@ -12,11 +11,11 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
-public class ParseLiteralTest extends ParseSimpleTest<ParseLiteralConfig> {
+public class ParseLiteralTest extends ParseSimpleTest<ParseLiteral.ParseLiteralConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseLiteralConfig config = new ParseLiteralConfig("flow");
+        ParseLiteral.ParseLiteralConfig config = new ParseLiteral.ParseLiteralConfig("flow");
         return asList( //
                 makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 1), //
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
@@ -26,13 +25,13 @@ public class ParseLiteralTest extends ParseSimpleTest<ParseLiteralConfig> {
         );
     }
 
-    public ParseLiteralTest(ParserData parserData, ParseLiteralConfig config, ParseResult expectedResult,
+    public ParseLiteralTest(ParserData parserData, ParseLiteral.ParseLiteralConfig config, ParseResult expectedResult,
                             int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseLiteralConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseLiteral.ParseLiteralConfig> makeParser(Params<ParserData> params) {
         return new ParseLiteral<>(params);
     }
 }

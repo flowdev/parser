@@ -1,8 +1,7 @@
 package org.flowdev.parser.op;
 
-import org.flowdev.base.data.EmptyConfig;
+import org.flowdev.base.data.NoConfig;
 import org.flowdev.base.op.Filter;
-import org.flowdev.parser.data.ParseLiteralConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.Test;
@@ -18,28 +17,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(Parameterized.class)
-public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteralConfig> {
+public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteral.ParseLiteralConfig> {
     private static final String EXPECTED_SEM_OBJECT = "SemTestData!";
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseLiteralConfig config = new ParseLiteralConfig("flow");
+        ParseLiteral.ParseLiteralConfig config = new ParseLiteral.ParseLiteralConfig("flow");
         return asList( //
                 makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 1), //
                 makeTestData("match", 0, "flow", config, -1, 0, "flow", 4, 0) //
         );
     }
 
-    public ParseSimpleSemTest(ParserData parserData, ParseLiteralConfig config, ParseResult expectedResult,
+    public ParseSimpleSemTest(ParserData parserData, ParseLiteral.ParseLiteralConfig config, ParseResult expectedResult,
                               int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
         dontRunTests = true;
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseLiteralConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseLiteral.ParseLiteralConfig> makeParser(Params<ParserData> params) {
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
-        Filter<ParserData, EmptyConfig> semantics = new Filter<ParserData, EmptyConfig>() {
+        Filter<ParserData, NoConfig> semantics = new Filter<ParserData, NoConfig>() {
             @Override
             protected void filter(ParserData data) {
                 data.result.value = EXPECTED_SEM_OBJECT;
