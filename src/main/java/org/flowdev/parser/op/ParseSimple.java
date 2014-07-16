@@ -22,9 +22,13 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
         if (semOutPort != null && matched(parserData.getResult())) {
             semOutPort.send(data);
         } else {
-            outPort.send(data);
+            defaultSemantics(parserData);
+            outPort.send(params.setParserData.set(data, parserData));
         }
     }
 
+    protected void defaultSemantics(ParserData data) {
+        data.getResult().setValue(data.getResult().getText());
+    }
     public abstract void parseSimple(String substring, C cfg, ParserData parserData);
 }

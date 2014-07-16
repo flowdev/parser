@@ -40,6 +40,11 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
         fillResultMatched(parserData, pos);
     }
 
+    @Override
+    protected void defaultSemantics(ParserData data) {
+        data.getResult().setValue("");
+    }
+
     public static class ParseBlockCommentConfig {
         private String commentStart;
         private String commentEnd;

@@ -101,11 +101,6 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         parserData.getResult().setErrPos(result.getErrPos());
     }
 
-    @Override
-    public void parseSimple(String substring, ParseMultipleConfig cfg, ParserData parserData) {
-        throw new UnsupportedOperationException("The filter method should handle everything itself!");
-    }
-
     public static class ParseMultipleConfig {
         private int min;
         private int max;

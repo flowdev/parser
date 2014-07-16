@@ -1,6 +1,7 @@
 package org.flowdev.parser.op;
 
 import org.flowdev.base.Port;
+import org.flowdev.parser.data.ParserData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,5 +27,15 @@ public abstract class ParseWithMultipleSubOp<T, C> extends ParseSimple<T, C> {
 
     public Port<T> getSubInPort() {
         return subInPort;
+    }
+
+    @Override
+    protected void defaultSemantics(ParserData data) {
+        // intentionally empty: super class is doing it all
+    }
+
+    @Override
+    public void parseSimple(String substring, C cfg, ParserData parserData) {
+        throw new UnsupportedOperationException("The filter method should handle everything itself!");
     }
 }

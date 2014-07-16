@@ -21,4 +21,9 @@ public class ParseEof<T> extends ParseSimple<T, NoConfig> {
                     + " characters of input left.");
         }
     }
+
+    @Override
+    protected void defaultSemantics(ParserData data) {
+        data.getResult().setValue("");
+    }
 }

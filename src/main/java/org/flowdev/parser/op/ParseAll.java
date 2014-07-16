@@ -66,10 +66,4 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
         result.setText(source.getContent().substring(result.getPos(), source.getPos()));
         return result;
     }
-
-    @Override
-    public void parseSimple(String substring, NoConfig cfg, ParserData parserData) {
-        throw new UnsupportedOperationException("The filter method should handle everything itself!");
-    }
-
 }

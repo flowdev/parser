@@ -22,6 +22,11 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLi
         fillResultMatched(parserData, idx >= 0 ? idx : substring.length());
     }
 
+    @Override
+    protected void defaultSemantics(ParserData data) {
+        data.getResult().setValue("");
+    }
+
     public static class ParseLineCommentConfig {
         private String commentStart;
 

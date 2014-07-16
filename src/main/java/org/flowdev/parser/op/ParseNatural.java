@@ -30,6 +30,11 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
         }
     }
 
+    @Override
+    protected void defaultSemantics(ParserData data) {
+        // intentionally empty: value has been set already by parseSimple!!!
+    }
+
     public static class ParseNaturalConfig {
         private int radix;
 

@@ -1,5 +1,6 @@
 package org.flowdev.parser.op;
 
+import org.flowdev.base.data.Feedback;
 import org.flowdev.base.data.NoConfig;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
@@ -51,21 +52,20 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
 
     private static ParseResult mergeErrors(List<ParseResult> errors) {
         ParseResult result = null;
+        Feedback feedback = null;
         for (ParseResult err : errors) {
-            if (result == null || result.getErrPos() < err.getErrPos()) {
+            if (result == null || feedback == null) {
                 result = err;
+                feedback = result.getFeedback();
             } else {
-                result.getFeedback().getInfos().addAll(err.getFeedback().getInfos());
-                result.getFeedback().getWarnings().addAll(err.getFeedback().getWarnings());
-                result.getFeedback().getErrors().addAll(err.getFeedback().getErrors());
+                if (result.getErrPos() < err.getErrPos()) {
+                    result.setErrPos(err.getErrPos());
+                }
+                feedback.getInfos().addAll(err.getFeedback().getInfos());
+                feedback.getWarnings().addAll(err.getFeedback().getWarnings());
+                feedback.getErrors().addAll(err.getFeedback().getErrors());
             }
         }
         return result;
     }
-
-    @Override
-    public void parseSimple(String substring, NoConfig cfg, ParserData parserData) {
-        throw new UnsupportedOperationException("The filter method should handle everything itself!");
-    }
-
 }
