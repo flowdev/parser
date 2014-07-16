@@ -15,12 +15,12 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
     public void parseSimple(String substring, ParseNaturalConfig cfg, ParserData parserData) {
         int i;
         //noinspection StatementWithEmptyBody
-        for (i = 0; i < substring.length() && Character.digit(substring.charAt(i), cfg.radix) >= 0; i++) {
+        for (i = 0; i < substring.length() && Character.digit(substring.charAt(i), cfg.getRadix()) >= 0; i++) {
             // nothing to do!
         }
         if (i > 0) {
             try {
-                parserData.getResult().setValue(Long.parseUnsignedLong(substring.substring(0, i), cfg.radix));
+                parserData.getResult().setValue(Long.parseUnsignedLong(substring.substring(0, i), cfg.getRadix()));
                 fillResultMatched(parserData, i);
             } catch (NumberFormatException nfe) {
                 fillResultUnmatched(parserData, 0, "NumberFormatException " + nfe.getMessage());
@@ -31,10 +31,14 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
     }
 
     public static class ParseNaturalConfig {
-        public int radix;
+        private int radix;
 
         public ParseNaturalConfig(int r) {
             this.radix = r;
+        }
+
+        public int getRadix() {
+            return radix;
         }
     }
 }

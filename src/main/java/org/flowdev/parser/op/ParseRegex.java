@@ -19,12 +19,12 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegex.ParseRegexConfig> {
 
     @Override
     public void parseSimple(String substring, ParseRegexConfig cfg, ParserData parserData) {
-        updateRegex(cfg.regex);
+        updateRegex(cfg.getRegex());
         Matcher matcher = regex.matcher(substring);
         if (matcher.lookingAt()) {
             fillResultMatched(parserData, matcher.end());
         } else {
-            fillResultUnmatched(parserData, 0, "Regex '" + cfg.regex + "' doesn't match.");
+            fillResultUnmatched(parserData, 0, "Regex '" + cfg.getRegex() + "' doesn't match.");
         }
     }
 
@@ -37,10 +37,14 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegex.ParseRegexConfig> {
     }
 
     public static class ParseRegexConfig {
-        public String regex;
+        private String regex;
 
         public ParseRegexConfig(String regex) {
             this.regex = regex;
+        }
+
+        public String getRegex() {
+            return regex;
         }
     }
 }

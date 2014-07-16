@@ -13,8 +13,8 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLi
 
     @Override
     public void parseSimple(String substring, ParseLineCommentConfig cfg, ParserData parserData) {
-        if (!substring.startsWith(cfg.commentStart)) {
-            fillResultUnmatched(parserData, 0, "Line comment stating with '" + cfg.commentStart + "' expected.");
+        if (!substring.startsWith(cfg.getCommentStart())) {
+            fillResultUnmatched(parserData, 0, "Line comment stating with '" + cfg.getCommentStart() + "' expected.");
             return;
         }
 
@@ -23,10 +23,14 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLi
     }
 
     public static class ParseLineCommentConfig {
-        public String commentStart;
+        private String commentStart;
 
         public ParseLineCommentConfig(String commentStart) {
             this.commentStart = commentStart;
+        }
+
+        public String getCommentStart() {
+            return commentStart;
         }
     }
 }

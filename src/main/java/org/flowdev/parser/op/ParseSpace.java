@@ -14,7 +14,7 @@ public class ParseSpace<T> extends ParseSimple<T, ParseSpace.ParseSpaceConfig> {
     @Override
     public void parseSimple(String substring, ParseSpaceConfig cfg, ParserData parserData) {
         int idx = 0;
-        while (substring.length() > idx && isSpace(substring.charAt(idx), cfg.includeNewline)) {
+        while (substring.length() > idx && isSpace(substring.charAt(idx), cfg.isAcceptNewline())) {
             idx++;
         }
         if (idx > 0) {
@@ -24,15 +24,19 @@ public class ParseSpace<T> extends ParseSimple<T, ParseSpace.ParseSpaceConfig> {
         }
     }
 
-    private boolean isSpace(char c, boolean includeNewline) {
-        return Character.isWhitespace(c) && (includeNewline || c != '\n');
+    private boolean isSpace(char c, boolean acceptNewline) {
+        return Character.isWhitespace(c) && (acceptNewline || c != '\n');
     }
 
     public static class ParseSpaceConfig {
-        public boolean includeNewline;
+        private boolean acceptNewline;
 
-        public ParseSpaceConfig(boolean includeNewline) {
-            this.includeNewline = includeNewline;
+        public ParseSpaceConfig(boolean acceptNewline) {
+            this.acceptNewline = acceptNewline;
+        }
+
+        public boolean isAcceptNewline() {
+            return acceptNewline;
         }
     }
 }
