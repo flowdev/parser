@@ -1,6 +1,7 @@
 package org.flowdev.parser.op;
 
 
+@SuppressWarnings("WeakerAccess")
 public class ParseMultiple1<T> extends ParseMultiple<T> {
     public ParseMultiple1(Params<T> params) {
         super(params);

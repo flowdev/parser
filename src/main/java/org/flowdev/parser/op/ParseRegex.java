@@ -37,7 +37,7 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegex.ParseRegexConfig> {
     }
 
     public static class ParseRegexConfig {
-        private String regex;
+        private final String regex;
 
         public ParseRegexConfig(String regex) {
             this.regex = regex;

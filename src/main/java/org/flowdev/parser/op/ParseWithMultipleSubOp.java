@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ParseWithMultipleSubOp<T, C> extends ParseSimple<T, C> {
     protected List<Port<T>> subOutPorts = new ArrayList<>();
     protected Port<T> subInPort = this::handleSubOpData;

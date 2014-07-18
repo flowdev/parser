@@ -5,6 +5,7 @@ import org.flowdev.parser.data.ParserData;
 
 import static org.flowdev.parser.util.ParserUtil.matched;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
     protected ParseSimple(Params<T> params) {
         super(params);
@@ -30,5 +31,6 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
     protected void defaultSemantics(ParserData data) {
         data.getResult().setValue(data.getResult().getText());
     }
+
     public abstract void parseSimple(String substring, C cfg, ParserData parserData);
 }

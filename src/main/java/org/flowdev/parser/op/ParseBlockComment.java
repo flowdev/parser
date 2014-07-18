@@ -46,8 +46,8 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
     }
 
     public static class ParseBlockCommentConfig {
-        private String commentStart;
-        private String commentEnd;
+        private final String commentStart;
+        private final String commentEnd;
 
         public ParseBlockCommentConfig(String commentStart, String commentEnd) {
             this.commentStart = commentStart;

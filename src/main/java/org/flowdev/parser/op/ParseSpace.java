@@ -29,7 +29,7 @@ public class ParseSpace<T> extends ParseSimple<T, ParseSpace.ParseSpaceConfig> {
     }
 
     public static class ParseSpaceConfig {
-        private boolean acceptNewline;
+        private final boolean acceptNewline;
 
         public ParseSpaceConfig(boolean acceptNewline) {
             this.acceptNewline = acceptNewline;

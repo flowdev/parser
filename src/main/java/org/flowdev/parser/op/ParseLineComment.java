@@ -28,7 +28,7 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLi
     }
 
     public static class ParseLineCommentConfig {
-        private String commentStart;
+        private final String commentStart;
 
         public ParseLineCommentConfig(String commentStart) {
             this.commentStart = commentStart;

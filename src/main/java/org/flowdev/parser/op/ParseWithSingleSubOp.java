@@ -4,6 +4,7 @@ import org.flowdev.base.Port;
 import org.flowdev.parser.data.ParserData;
 
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ParseWithSingleSubOp<T, C> extends ParseSimple<T, C> {
     protected Port<T> subOutPort;
     protected Port<T> subInPort = this::handleSubOpData;

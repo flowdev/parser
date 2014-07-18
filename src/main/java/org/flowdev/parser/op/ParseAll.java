@@ -6,8 +6,8 @@ import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.ParserTempData;
 import org.flowdev.parser.data.SourceData;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.flowdev.parser.util.ParserUtil.matched;
 
@@ -54,11 +54,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     }
 
     private Object mergeValues(List<ParseResult> subResults) {
-        List<Object> allValue = new ArrayList<>(subResults.size());
-        for (ParseResult subResult : subResults) {
-            allValue.add(subResult.getValue());
-        }
-        return allValue;
+        return subResults.stream().map(ParseResult::getValue).collect(Collectors.toList());
     }
 
     private ParseResult mergeResults(List<ParseResult> subResults, SourceData source) {

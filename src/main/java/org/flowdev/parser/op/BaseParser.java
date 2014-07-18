@@ -6,6 +6,7 @@ import org.flowdev.base.Setter;
 import org.flowdev.base.op.Filter;
 import org.flowdev.parser.data.ParserData;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class BaseParser<T, C> extends Filter<T, C> {
     public static class Params<T> {
         public Getter<T, ParserData> getParserData;
@@ -13,9 +14,10 @@ public abstract class BaseParser<T, C> extends Filter<T, C> {
     }
 
     protected Port<T> semOutPort;
+    @SuppressWarnings("Convert2MethodRef")
     protected Port<T> semInPort = data -> outPort.send(data);
 
-    protected Params<T> params;
+    protected final Params<T> params;
 
     protected BaseParser(Params<T> params) {
         this.params = params;

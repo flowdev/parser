@@ -21,7 +21,7 @@ public class ParseLiteral<T> extends ParseSimple<T, ParseLiteral.ParseLiteralCon
     }
 
     public static class ParseLiteralConfig {
-        private String literal;
+        private final String literal;
 
         public ParseLiteralConfig(String literal) {
             this.literal = literal;

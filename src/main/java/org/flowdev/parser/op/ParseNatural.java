@@ -36,7 +36,7 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
     }
 
     public static class ParseNaturalConfig {
-        private int radix;
+        private final int radix;
 
         public ParseNaturalConfig(int r) {
             this.radix = r;

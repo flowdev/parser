@@ -102,8 +102,8 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     }
 
     public static class ParseMultipleConfig {
-        private int min;
-        private int max;
+        private final int min;
+        private final int max;
 
         public ParseMultipleConfig(int min, int max) {
             this.min = min;

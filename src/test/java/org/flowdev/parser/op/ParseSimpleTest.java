@@ -10,12 +10,13 @@ import static org.flowdev.parser.op.ParseSimple.Params;
 import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class ParseSimpleTest<C> {
-    ParserData parserData;
-    private ParseResult expectedResult;
-    private int expectedSrcPos;
-    private int expectedErrorCount;
-    private ParseSimple<ParserData, C> parser;
+    final ParserData parserData;
+    private final ParseResult expectedResult;
+    private final int expectedSrcPos;
+    private final int expectedErrorCount;
+    private final ParseSimple<ParserData, C> parser;
     protected boolean dontRunTests = false;
 
     public ParseSimpleTest(ParserData parserData, C config, ParseResult expectedResult, int expectedSrcPos, int expectedErrorCount) {
