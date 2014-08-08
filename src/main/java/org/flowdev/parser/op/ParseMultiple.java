@@ -97,7 +97,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         parserData.getSource().setPos(tempData.getOrgSrcPos());
         parserData.setSubResults(null);
         parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
-        fillResultUnmatched(parserData, 0, result.getFeedback().getErrors().get(0));
+        fillResultUnmatched(parserData, 0, result.getFeedback().errors().get(0));
         parserData.getResult().setErrPos(result.getErrPos());
     }
 

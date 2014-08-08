@@ -42,9 +42,9 @@ public class ParseAlternativesSync<T> extends ParseWithMultipleSubOpSync<T, UseT
     }
 
     private int addFeedback(ParseResult result, Feedback allFeedback, int minErrPos) {
-        allFeedback.getErrors().addAll(result.getFeedback().getErrors());
-        allFeedback.getWarnings().addAll(result.getFeedback().getWarnings());
-        allFeedback.getInfos().addAll(result.getFeedback().getInfos());
+        allFeedback.errors().addAll(result.getFeedback().errors());
+        allFeedback.warnings().addAll(result.getFeedback().warnings());
+        allFeedback.infos().addAll(result.getFeedback().infos());
 
         return (result.getErrPos() < minErrPos) ? result.getErrPos() : minErrPos;
     }

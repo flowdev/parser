@@ -59,10 +59,10 @@ public abstract class ParseSimpleTest<C> {
         if (parserData.getResult().getFeedback() == null) {
             return 0;
         }
-        if (parserData.getResult().getFeedback().getErrors() == null) {
+        if (parserData.getResult().getFeedback().errors() == null) {
             return 0;
         }
-        return parserData.getResult().getFeedback().getErrors().size();
+        return parserData.getResult().getFeedback().errors().size();
     }
 
     public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,

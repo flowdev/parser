@@ -61,9 +61,9 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
                 if (result.getErrPos() < err.getErrPos()) {
                     result.setErrPos(err.getErrPos());
                 }
-                feedback.getInfos().addAll(err.getFeedback().getInfos());
-                feedback.getWarnings().addAll(err.getFeedback().getWarnings());
-                feedback.getErrors().addAll(err.getFeedback().getErrors());
+                feedback.infos().addAll(err.getFeedback().infos());
+                feedback.warnings().addAll(err.getFeedback().warnings());
+                feedback.errors().addAll(err.getFeedback().errors());
             }
         }
         return result;

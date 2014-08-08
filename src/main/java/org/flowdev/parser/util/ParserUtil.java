@@ -18,7 +18,7 @@ public abstract class ParserUtil {
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
         Feedback feedback = new Feedback();
-        feedback.getErrors().add(where(parserData.getSource(), parserData.getResult().getErrPos()) + message);
+        feedback.errors().add(where(parserData.getSource(), parserData.getResult().getErrPos()) + message);
 
         fillResultUnmatchedAbsolut(parserData, parserData.getSource().getPos() + pos, feedback);
     }
