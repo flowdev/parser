@@ -1,26 +1,14 @@
 package org.flowdev.parser.data;
 
-import org.flowdev.base.data.Feedback;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ParserData {
-    private Feedback feedback;
     private SourceData source;
     private ParseResult result;
     private List<ParseResult> subResults;
     private List<ParserTempData> tempStack = new ArrayList<>(128);
-
-
-    public Feedback getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(Feedback feedback) {
-        this.feedback = feedback;
-    }
 
     public SourceData getSource() {
         return source;

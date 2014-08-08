@@ -7,14 +7,14 @@ import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
 public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLineCommentConfig> {
-    public ParseLineComment(Params<T> params) {
+    public ParseLineComment(ParserParams<T> params) {
         super(params);
     }
 
     @Override
     public void parseSimple(String substring, ParseLineCommentConfig cfg, ParserData parserData) {
         if (!substring.startsWith(cfg.getCommentStart())) {
-            fillResultUnmatched(parserData, 0, "Line comment stating with '" + cfg.getCommentStart() + "' expected.");
+            fillResultUnmatched(parserData, 0, "Line comment starting with '" + cfg.getCommentStart() + "' expected.");
             return;
         }
 

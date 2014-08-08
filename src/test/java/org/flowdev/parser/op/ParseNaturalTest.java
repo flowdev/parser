@@ -8,7 +8,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
 public class ParseNaturalTest extends ParseSimpleTest<ParseNatural.ParseNaturalConfig> {
@@ -32,7 +31,7 @@ public class ParseNaturalTest extends ParseSimpleTest<ParseNatural.ParseNaturalC
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseNatural.ParseNaturalConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseNatural.ParseNaturalConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseNatural<>(params);
     }
 }

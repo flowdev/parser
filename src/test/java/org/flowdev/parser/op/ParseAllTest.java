@@ -9,7 +9,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.BaseParser.Params;
 
 @RunWith(Parameterized.class)
 public class ParseAllTest extends ParseSimpleTest<NoConfig> {
@@ -32,7 +31,7 @@ public class ParseAllTest extends ParseSimpleTest<NoConfig> {
     }
 
     @Override
-    protected ParseSimple<ParserData, NoConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, NoConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral<ParserData> parseLiteralFlow = new ParseLiteral<>(params);
         parseLiteralFlow.getConfigPort().send(new ParseLiteral.ParseLiteralConfig("flow"));
 

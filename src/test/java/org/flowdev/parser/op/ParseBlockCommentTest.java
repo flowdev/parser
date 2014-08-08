@@ -8,7 +8,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
 public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockComment.ParseBlockCommentConfig> {
@@ -35,7 +34,7 @@ public class ParseBlockCommentTest extends ParseSimpleTest<ParseBlockComment.Par
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseBlockComment.ParseBlockCommentConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseBlockComment.ParseBlockCommentConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseBlockComment<>(params);
     }
 }

@@ -11,7 +11,7 @@ import static org.flowdev.parser.util.ParserUtil.*;
 
 
 public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.ParseMultipleConfig> {
-    public ParseMultiple(Params<T> params) {
+    public ParseMultiple(ParserParams<T> params) {
         super(params);
         semInPort = data -> {
             ParserData parserData = params.getParserData.get(data);
@@ -28,7 +28,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         }
         parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
         parserData.setSubResults(null);
-        subOutPort.send(data);
+        subOutPort.send(params.setParserData.set(data, parserData));
     }
 
     @Override

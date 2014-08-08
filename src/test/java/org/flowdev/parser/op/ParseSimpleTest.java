@@ -6,17 +6,15 @@ import org.flowdev.parser.data.SourceData;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.flowdev.parser.op.ParseSimple.Params;
 import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("WeakerAccess")
 public abstract class ParseSimpleTest<C> {
     final ParserData parserData;
     private final ParseResult expectedResult;
     private final int expectedSrcPos;
     private final int expectedErrorCount;
-    private final ParseSimple<ParserData, C> parser;
+    private final BaseParser<ParserData, C> parser;
     protected boolean dontRunTests = false;
 
     public ParseSimpleTest(ParserData parserData, C config, ParseResult expectedResult, int expectedSrcPos, int expectedErrorCount) {
@@ -25,7 +23,7 @@ public abstract class ParseSimpleTest<C> {
         this.expectedSrcPos = expectedSrcPos;
         this.expectedErrorCount = expectedErrorCount;
 
-        Params<ParserData> params = new Params<>();
+        ParserParams<ParserData> params = new ParserParams<>();
         params.getParserData = data -> data;
         params.setParserData = (data, subdata) -> {
             data = subdata;
@@ -40,7 +38,7 @@ public abstract class ParseSimpleTest<C> {
         this.parser.getConfigPort().send(config);
     }
 
-    protected abstract ParseSimple<ParserData, C> makeParser(Params<ParserData> params);
+    protected abstract BaseParser<ParserData, C> makeParser(ParserParams<ParserData> params);
 
     @Test
     public void testParser() {

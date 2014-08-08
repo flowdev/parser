@@ -13,7 +13,7 @@ public class ParseRegex<T> extends ParseSimple<T, ParseRegex.ParseRegexConfig> {
     private String regexStr;
     private Pattern regex;
 
-    public ParseRegex(Params<T> params) {
+    public ParseRegex(ParserParams<T> params) {
         super(params);
     }
 

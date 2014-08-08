@@ -5,9 +5,8 @@ import org.flowdev.parser.data.ParserData;
 
 import static org.flowdev.parser.util.ParserUtil.matched;
 
-@SuppressWarnings("WeakerAccess")
 public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
-    protected ParseSimple(Params<T> params) {
+    protected ParseSimple(ParserParams<T> params) {
         super(params);
     }
 
@@ -19,11 +18,12 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
 
         parseSimple(parserData.getSource().getContent().substring(parserData.getSource().getPos()), cfg, parserData);
 
-        params.setParserData.set(data, parserData);
         if (semOutPort != null && matched(parserData.getResult())) {
-            semOutPort.send(data);
+            semOutPort.send(params.setParserData.set(data, parserData));
         } else {
-            defaultSemantics(parserData);
+            if (matched(parserData.getResult())) {
+                defaultSemantics(parserData);
+            }
             outPort.send(params.setParserData.set(data, parserData));
         }
     }

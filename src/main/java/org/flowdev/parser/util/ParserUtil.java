@@ -5,8 +5,6 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.SourceData;
 
-import java.util.ArrayList;
-
 public abstract class ParserUtil {
     public static void fillResultMatched(ParserData parserData, int len) {
         ParseResult result = parserData.getResult();
@@ -14,22 +12,23 @@ public abstract class ParserUtil {
 
         result.setErrPos(-1);
         result.setPos(srcPos);
-        result.setText(parserData.getSource().getContent().substring(result.getPos(), result.getPos() + len));
+        result.setText(parserData.getSource().getContent().substring(srcPos, srcPos + len));
         parserData.getSource().setPos(srcPos + len);
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
+        Feedback feedback = new Feedback();
+        feedback.getErrors().add(where(parserData.getSource(), parserData.getResult().getErrPos()) + message);
+
+        fillResultUnmatchedAbsolut(parserData, parserData.getSource().getPos() + pos, feedback);
+    }
+
+    public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
         ParseResult result = parserData.getResult();
-        result.setErrPos(parserData.getSource().getPos() + pos);
+        result.setErrPos(errPos);
         result.setPos(parserData.getSource().getPos());
         result.setText(null);
-        if (result.getFeedback() == null) {
-            result.setFeedback(new Feedback());
-        }
-        if (result.getFeedback().getErrors() == null) {
-            result.getFeedback().setErrors(new ArrayList<>());
-        }
-        result.getFeedback().getErrors().add(message);
+        result.setFeedback(feedback);
     }
 
     public static String where(SourceData source, int pos) {

@@ -8,7 +8,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
 public class ParseRegexTest extends ParseSimpleTest<ParseRegex.ParseRegexConfig> {
@@ -31,7 +30,7 @@ public class ParseRegexTest extends ParseSimpleTest<ParseRegex.ParseRegexConfig>
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseRegex.ParseRegexConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseRegex.ParseRegexConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseRegex<>(params);
     }
 }

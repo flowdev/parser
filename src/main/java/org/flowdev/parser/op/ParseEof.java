@@ -8,7 +8,7 @@ import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
 public class ParseEof<T> extends ParseSimple<T, NoConfig> {
-    public ParseEof(Params<T> params) {
+    public ParseEof(ParserParams<T> params) {
         super(params);
     }
 

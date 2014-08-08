@@ -8,15 +8,15 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
+import static org.flowdev.parser.op.ParseSpace.ParseSpaceConfig;
 
 @RunWith(Parameterized.class)
-public class ParseSpaceTest extends ParseSimpleTest<ParseSpace.ParseSpaceConfig> {
+public class ParseSpaceTest extends ParseSimpleTest<ParseSpaceConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseSpace.ParseSpaceConfig incNlCfg = new ParseSpace.ParseSpaceConfig(true);
-        ParseSpace.ParseSpaceConfig excNlCfg = new ParseSpace.ParseSpaceConfig(false);
+        ParseSpaceConfig incNlCfg = new ParseSpaceConfig(true);
+        ParseSpaceConfig excNlCfg = new ParseSpaceConfig(false);
         return asList( //
                 makeTestData("no match", 0, "ba", incNlCfg, 0, 0, null, 0, 1), //
                 makeTestData("no match", 0, "ba", excNlCfg, 0, 0, null, 0, 1), //
@@ -31,13 +31,13 @@ public class ParseSpaceTest extends ParseSimpleTest<ParseSpace.ParseSpaceConfig>
         );
     }
 
-    public ParseSpaceTest(ParserData parserData, ParseSpace.ParseSpaceConfig config, ParseResult expectedResult,
+    public ParseSpaceTest(ParserData parserData, ParseSpaceConfig config, ParseResult expectedResult,
                           int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseSpace.ParseSpaceConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseSpaceConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseSpace<>(params);
     }
 }

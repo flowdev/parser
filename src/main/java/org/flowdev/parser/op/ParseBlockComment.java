@@ -6,7 +6,7 @@ import static org.flowdev.parser.util.ParserUtil.fillResultMatched;
 import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.ParseBlockCommentConfig> {
-    public ParseBlockComment(Params<T> params) {
+    public ParseBlockComment(ParserParams<T> params) {
         super(params);
     }
 

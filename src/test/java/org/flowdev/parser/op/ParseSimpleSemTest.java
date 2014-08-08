@@ -1,7 +1,7 @@
 package org.flowdev.parser.op;
 
 import org.flowdev.base.data.NoConfig;
-import org.flowdev.base.op.Filter;
+import org.flowdev.base.op.FilterOp;
 import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.junit.Test;
@@ -11,7 +11,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
 import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -36,9 +35,9 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteral.ParseLitera
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseLiteral.ParseLiteralConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, ParseLiteral.ParseLiteralConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
-        Filter<ParserData, NoConfig> semantics = new Filter<ParserData, NoConfig>() {
+        FilterOp<ParserData, NoConfig> semantics = new FilterOp<ParserData, NoConfig>() {
             @Override
             protected void filter(ParserData data) {
                 data.getResult().setValue(EXPECTED_SEM_OBJECT);

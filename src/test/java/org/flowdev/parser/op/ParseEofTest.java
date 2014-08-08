@@ -9,7 +9,6 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
-import static org.flowdev.parser.op.ParseSimple.Params;
 
 @RunWith(Parameterized.class)
 public class ParseEofTest extends ParseSimpleTest<NoConfig> {
@@ -30,7 +29,7 @@ public class ParseEofTest extends ParseSimpleTest<NoConfig> {
     }
 
     @Override
-    protected ParseSimple<ParserData, NoConfig> makeParser(Params<ParserData> params) {
+    protected ParseSimple<ParserData, NoConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseEof<>(params);
     }
 }

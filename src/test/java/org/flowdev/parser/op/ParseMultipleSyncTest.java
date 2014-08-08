@@ -8,16 +8,17 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
 
 @RunWith(Parameterized.class)
-public class ParseMultipleTest extends ParseSimpleTest<ParseMultiple.ParseMultipleConfig> {
+public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseMultiple.ParseMultipleConfig config0_1 = new ParseMultiple.ParseMultipleConfig(0, 1);
-        ParseMultiple.ParseMultipleConfig config0_n = new ParseMultiple.ParseMultipleConfig(0, Integer.MAX_VALUE);
-        ParseMultiple.ParseMultipleConfig config1_n = new ParseMultiple.ParseMultipleConfig(1, Integer.MAX_VALUE);
-        ParseMultiple.ParseMultipleConfig config2_3 = new ParseMultiple.ParseMultipleConfig(2, 3);
+        ParseMultipleSyncConfig config0_1 = new ParseMultipleSyncConfig(0, 1, false);
+        ParseMultipleSyncConfig config0_n = new ParseMultipleSyncConfig(0, Integer.MAX_VALUE, true);
+        ParseMultipleSyncConfig config1_n = new ParseMultipleSyncConfig(1, Integer.MAX_VALUE, false);
+        ParseMultipleSyncConfig config2_3 = new ParseMultipleSyncConfig(2, 3, true);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
                 makeTestData("0-1: no match", 0, " flow", config0_1, -1, 0, "", 0, 0), //
@@ -37,18 +38,18 @@ public class ParseMultipleTest extends ParseSimpleTest<ParseMultiple.ParseMultip
         );
     }
 
-    public ParseMultipleTest(ParserData parserData, ParseMultiple.ParseMultipleConfig config, ParseResult expectedResult,
-                             int expectedSrcPos, int expectedErrorCount) {
+    public ParseMultipleSyncTest(ParserData parserData, ParseMultipleSyncConfig config, ParseResult expectedResult,
+                                 int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseMultiple.ParseMultipleConfig> makeParser(ParserParams<ParserData> params) {
+    protected BaseParser<ParserData, ParseMultipleSyncConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral.ParseLiteralConfig literalConfig = new ParseLiteral.ParseLiteralConfig("flow");
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         parseLiteral.getConfigPort().send(literalConfig);
 
-        ParseMultiple<ParserData> parseMultiple = new ParseMultiple<>(params);
+        ParseMultipleSync<ParserData> parseMultiple = new ParseMultipleSync<>(params);
         parseMultiple.setSubOutPort(parseLiteral.getInPort());
         parseLiteral.setOutPort(parseMultiple.getSubInPort());
         return parseMultiple;

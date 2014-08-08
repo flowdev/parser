@@ -12,7 +12,7 @@ import static org.flowdev.parser.util.ParserUtil.matched;
 
 
 public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
-    public ParseAlternatives(Params<T> params) {
+    public ParseAlternatives(ParserParams<T> params) {
         super(params);
     }
 

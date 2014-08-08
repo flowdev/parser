@@ -7,7 +7,7 @@ import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 
 
 public class ParseSpace<T> extends ParseSimple<T, ParseSpace.ParseSpaceConfig> {
-    public ParseSpace(Params<T> params) {
+    public ParseSpace(ParserParams<T> params) {
         super(params);
     }
 
