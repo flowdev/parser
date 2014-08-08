@@ -51,7 +51,7 @@ public class ParseAlternativesSync<T> extends ParseWithMultipleSubOpSync<T, UseT
 
     @Override
     protected void defaultSemantics(ParserData parserData) {
-        if (getVolatileConfig().isUseTextSemantic()) {
+        if (getVolatileConfig().useTextSemantic()) {
             super.defaultSemantics(parserData);
         }
         // else: the result has been set already by the matching sub operation

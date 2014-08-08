@@ -15,7 +15,7 @@ public class ParseAlternativesSyncTest extends ParseSimpleTest<UseTextSemanticCo
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        UseTextSemanticConfig config = new UseTextSemanticConfig(false);
+        UseTextSemanticConfig config = new UseTextSemanticConfig().useTextSemantic(false);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 2), //

@@ -46,7 +46,7 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
 
     @Override
     protected void defaultSemantics(ParserData parserData) {
-        if (getVolatileConfig().isUseTextSemantic()) {
+        if (getVolatileConfig().useTextSemantic()) {
             super.defaultSemantics(parserData);
         } else {
             List<Object> result =
