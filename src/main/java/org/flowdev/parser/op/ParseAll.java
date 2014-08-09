@@ -47,7 +47,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
                 subOutPorts.get(count).send(params.setParserData.set(data, parserData));
             }
         } else {
-            parserData.getSource().setPos(tempData.getOrgSrcPos());
+            parserData.getSource().pos(tempData.getOrgSrcPos());
             parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
             outPort.send(params.setParserData.set(data, parserData));
         }

@@ -13,7 +13,7 @@ public abstract class ParserUtil {
         result.setErrPos(-1);
         result.setPos(srcPos);
         result.setText(parserData.getSource().content().substring(srcPos, srcPos + len));
-        parserData.getSource().setPos(srcPos + len);
+        parserData.getSource().pos(srcPos + len);
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
@@ -35,8 +35,7 @@ public abstract class ParserUtil {
         if (pos >= source.wherePrevNl()) {
             return whereForward(source, pos);
         } else if (pos <= source.wherePrevNl() - pos) {
-            source.setWhereLine(1);
-            source.setWherePrevNl(-1);
+            source.whereLine(1).wherePrevNl(-1);
             return whereForward(source, pos);
         } else {
             return whereBackward(source, pos);
@@ -80,8 +79,7 @@ public abstract class ParserUtil {
 
     private static String tryWhere(SourceData source, int prevNl, int pos, int nextNl, int lineNum) {
         if (prevNl < pos && pos <= nextNl) {
-            source.setWherePrevNl(prevNl);
-            source.setWhereLine(lineNum);
+            source.wherePrevNl(prevNl).whereLine(lineNum);
             return generateWhereMessage(source.name(), lineNum, pos - prevNl,
                     source.content().substring(prevNl + 1, nextNl));
         } else if (prevNl >= nextNl) {

@@ -60,7 +60,7 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
         int len = lastSub.getPos() + lastSub.getText().length() - orgSrcPos;
 
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(orgSrcPos);
+        parserData.getSource().pos(orgSrcPos);
         parserData.setSubResults(subResults);
         fillResultMatched(parserData, len);
     }
@@ -69,7 +69,7 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
         ParseResult result = parserData.getResult();
 
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(orgSrcPos);
+        parserData.getSource().pos(orgSrcPos);
         parserData.setSubResults(null);
         fillResultUnmatchedAbsolut(parserData, result.getErrPos(), result.getFeedback());
     }

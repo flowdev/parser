@@ -85,7 +85,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         int len = result.getPos() + textLen - tempData.getOrgSrcPos();
 
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(tempData.getOrgSrcPos());
+        parserData.getSource().pos(tempData.getOrgSrcPos());
         parserData.setSubResults(tempData.getSubResults());
         parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
         fillResultMatched(parserData, len);
@@ -94,7 +94,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     private void createUnmatchedResult(ParserData parserData, ParserTempData tempData) {
         ParseResult result = parserData.getResult();
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(tempData.getOrgSrcPos());
+        parserData.getSource().pos(tempData.getOrgSrcPos());
         parserData.setSubResults(null);
         parserData.getTempStack().remove(parserData.getTempStack().size() - 1);
         fillResultUnmatched(parserData, 0, result.getFeedback().errors().get(0));

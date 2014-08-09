@@ -38,7 +38,7 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
         } else {
             count++;
             tempData.getSubResults().add(parserData.getResult());
-            parserData.getSource().setPos(tempData.getOrgSrcPos());
+            parserData.getSource().pos(tempData.getOrgSrcPos());
             if (count >= subOutPorts.size()) {
                 parserData.setResult(mergeErrors(tempData.getSubResults()));
                 parserData.getTempStack().remove(parserData.getTempStack().size() - 1);

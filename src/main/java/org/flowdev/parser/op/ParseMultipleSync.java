@@ -70,7 +70,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         }
 
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(orgSrcPos);
+        parserData.getSource().pos(orgSrcPos);
         parserData.setSubResults(subResults);
         fillResultMatched(parserData, len);
     }
@@ -79,7 +79,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         ParseResult result = parserData.getResult();
 
         parserData.setResult(new ParseResult());
-        parserData.getSource().setPos(orgSrcPos);
+        parserData.getSource().pos(orgSrcPos);
         parserData.setSubResults(null);
         fillResultUnmatchedAbsolut(parserData, result.getErrPos(), result.getFeedback());
     }
