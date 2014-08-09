@@ -38,39 +38,20 @@ public class SourceData {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String content() {
         return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public int pos() {
         return pos;
     }
 
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
     public int wherePrevNl() {
         return wherePrevNl;
-    }
-
-    public void setWherePrevNl(int wherePrevNl) {
-        this.wherePrevNl = wherePrevNl;
     }
 
     public int whereLine() {
         return whereLine;
     }
 
-    public void setWhereLine(int whereLine) {
-        this.whereLine = whereLine;
-    }
 }
