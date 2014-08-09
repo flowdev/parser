@@ -20,7 +20,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().pos()));
         subOutPorts.get(0).send(params.setParserData.set(data, parserData));
     }
 
@@ -59,7 +59,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, NoConfig> {
 
     private ParseResult mergeResults(List<ParseResult> subResults, SourceData source) {
         ParseResult result = subResults.get(0);
-        result.setText(source.getContent().substring(result.getPos(), source.getPos()));
+        result.setText(source.content().substring(result.getPos(), source.pos()));
         return result;
     }
 }

@@ -8,11 +8,11 @@ import org.flowdev.parser.data.SourceData;
 public abstract class ParserUtil {
     public static void fillResultMatched(ParserData parserData, int len) {
         ParseResult result = parserData.getResult();
-        int srcPos = parserData.getSource().getPos();
+        int srcPos = parserData.getSource().pos();
 
         result.setErrPos(-1);
         result.setPos(srcPos);
-        result.setText(parserData.getSource().getContent().substring(srcPos, srcPos + len));
+        result.setText(parserData.getSource().content().substring(srcPos, srcPos + len));
         parserData.getSource().setPos(srcPos + len);
     }
 
@@ -20,21 +20,21 @@ public abstract class ParserUtil {
         Feedback feedback = new Feedback();
         feedback.errors().add(where(parserData.getSource(), parserData.getResult().getErrPos()) + message);
 
-        fillResultUnmatchedAbsolut(parserData, parserData.getSource().getPos() + pos, feedback);
+        fillResultUnmatchedAbsolut(parserData, parserData.getSource().pos() + pos, feedback);
     }
 
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
         ParseResult result = parserData.getResult();
         result.setErrPos(errPos);
-        result.setPos(parserData.getSource().getPos());
+        result.setPos(parserData.getSource().pos());
         result.setText(null);
         result.setFeedback(feedback);
     }
 
     public static String where(SourceData source, int pos) {
-        if (pos >= source.getWherePrevNl()) {
+        if (pos >= source.wherePrevNl()) {
             return whereForward(source, pos);
-        } else if (pos <= source.getWherePrevNl() - pos) {
+        } else if (pos <= source.wherePrevNl() - pos) {
             source.setWhereLine(1);
             source.setWherePrevNl(-1);
             return whereForward(source, pos);
@@ -45,9 +45,9 @@ public abstract class ParserUtil {
 
     private static String whereForward(SourceData source, int pos) {
         String where = null;
-        String text = source.getContent();
-        int lineNum = source.getWhereLine();   // Line number
-        int prevNl = source.getWherePrevNl();  // Line start (position of preceding newline)
+        String text = source.content();
+        int lineNum = source.whereLine();   // Line number
+        int prevNl = source.wherePrevNl();  // Line start (position of preceding newline)
         int nextNl;   // Position of next newline or end
 
         while (where == null) {
@@ -64,10 +64,10 @@ public abstract class ParserUtil {
 
     private static String whereBackward(SourceData source, int pos) {
         String where = null;
-        String text = source.getContent();
-        int lineNum = source.getWhereLine();   // Line number
+        String text = source.content();
+        int lineNum = source.whereLine();   // Line number
         int prevNl;  // Line start (position of preceding newline)
-        int nextNl = source.getWherePrevNl();   // Position of next newline or end
+        int nextNl = source.wherePrevNl();   // Position of next newline or end
 
         while (where == null) {
             prevNl = text.lastIndexOf('\n', nextNl - 1);
@@ -82,10 +82,10 @@ public abstract class ParserUtil {
         if (prevNl < pos && pos <= nextNl) {
             source.setWherePrevNl(prevNl);
             source.setWhereLine(lineNum);
-            return generateWhereMessage(source.getName(), lineNum, pos - prevNl,
-                    source.getContent().substring(prevNl + 1, nextNl));
+            return generateWhereMessage(source.name(), lineNum, pos - prevNl,
+                    source.content().substring(prevNl + 1, nextNl));
         } else if (prevNl >= nextNl) {
-            return "ERROR: Unable to find position " + pos + " in file: " + source.getName();
+            return "ERROR: Unable to find position " + pos + " in file: " + source.name();
         }
         return null;
     }

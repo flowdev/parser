@@ -19,7 +19,7 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
     @Override
     public T parseAnySync(T data, UseTextSemanticConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
-        int orgSrcPos = parserData.getSource().getPos();
+        int orgSrcPos = parserData.getSource().pos();
         List<ParseResult> subResults = new ArrayList<>(128);
         boolean matched = true;
 

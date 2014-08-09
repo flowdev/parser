@@ -26,7 +26,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         if (parserData.getTempStack() == null) {
             parserData.setTempStack(new ArrayList<>(128));
         }
-        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().pos()));
         parserData.setSubResults(null);
         subOutPort.send(params.setParserData.set(data, parserData));
     }

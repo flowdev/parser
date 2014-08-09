@@ -17,7 +17,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
     @Override
     public T parseAnySync(T data, ParseMultipleSyncConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
-        int orgSrcPos = parserData.getSource().getPos();
+        int orgSrcPos = parserData.getSource().pos();
         List<ParseResult> subResults = new ArrayList<>(1024);
         boolean matched = true;
 

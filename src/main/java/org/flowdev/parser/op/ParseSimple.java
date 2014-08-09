@@ -16,7 +16,7 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
         parserData.setResult(new ParseResult());
         C cfg = getVolatileConfig();
 
-        parseSimple(parserData.getSource().getContent().substring(parserData.getSource().getPos()), cfg, parserData);
+        parseSimple(parserData.getSource().content().substring(parserData.getSource().pos()), cfg, parserData);
 
         if (semOutPort != null && matched(parserData.getResult())) {
             semOutPort.send(params.setParserData.set(data, parserData));

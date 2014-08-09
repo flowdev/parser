@@ -47,7 +47,7 @@ public abstract class ParseSimpleTest<C> {
         }
         parser.getInPort().send(parserData);
         assertEquals("unexpected error position:", expectedResult.getErrPos(), parserData.getResult().getErrPos());
-        assertEquals("unexpected source position:", expectedSrcPos, parserData.getSource().getPos());
+        assertEquals("unexpected source position:", expectedSrcPos, parserData.getSource().pos());
         if (matched(expectedResult)) {
             assertEquals("unexpected result position:", expectedResult.getPos(), parserData.getResult().getPos());
             assertEquals("unexpected result text:", expectedResult.getText(), parserData.getResult().getText());
@@ -68,10 +68,7 @@ public abstract class ParseSimpleTest<C> {
     public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,
                                         int resultPos, String resultText, int newSrcPos, int errorCount) {
         ParserData parserData = new ParserData();
-        parserData.setSource(new SourceData());
-        parserData.getSource().setName(srcName);
-        parserData.getSource().setPos(srcPos);
-        parserData.getSource().setContent(srcContent);
+        parserData.setSource(new SourceData().name(srcName).pos(srcPos).content(srcContent));
 
         ParseResult parseResult = new ParseResult();
         parseResult.setErrPos(errPos);

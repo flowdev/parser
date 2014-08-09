@@ -19,7 +19,7 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, NoConfig> {
     @Override
     public void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.getTempStack().add(new ParserTempData(parserData.getSource().getPos()));
+        parserData.getTempStack().add(new ParserTempData(parserData.getSource().pos()));
         subOutPorts.get(0).send(params.setParserData.set(data, parserData));
     }
 
