@@ -8,13 +8,14 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseNatural.ParseNaturalConfig;
 
 @RunWith(Parameterized.class)
-public class ParseNaturalTest extends ParseSimpleTest<ParseNatural.ParseNaturalConfig> {
+public class ParseNaturalTest extends ParseSimpleTest<ParseNaturalConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseNatural.ParseNaturalConfig config = new ParseNatural.ParseNaturalConfig(10);
+        ParseNaturalConfig config = new ParseNaturalConfig().radix(10);
         return asList( //
                 makeTestData("no match", 0, "baaa", config, 0, 0, null, 0, 1), //
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
@@ -25,13 +26,13 @@ public class ParseNaturalTest extends ParseSimpleTest<ParseNatural.ParseNaturalC
         );
     }
 
-    public ParseNaturalTest(ParserData parserData, ParseNatural.ParseNaturalConfig config, ParseResult expectedResult,
+    public ParseNaturalTest(ParserData parserData, ParseNaturalConfig config, ParseResult expectedResult,
                             int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseNatural.ParseNaturalConfig> makeParser(ParserParams<ParserData> params) {
+    protected ParseSimple<ParserData, ParseNaturalConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseNatural<>(params);
     }
 }

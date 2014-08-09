@@ -21,7 +21,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         List<ParseResult> subResults = new ArrayList<>(1024);
         boolean matched = true;
 
-        while (matched && subResults.size() < cfg.getMax()) {
+        while (matched && subResults.size() < cfg.max()) {
             subOutPort.send(params.setParserData.set(data, parserData));
             data = dataFromSubOp;
             parserData = params.getParserData.get(data);
@@ -33,7 +33,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         }
 
 
-        if (subResults.size() >= cfg.getMin()) {
+        if (subResults.size() >= cfg.min()) {
             createMatchedResult(parserData, subResults, orgSrcPos);
         } else {
             createUnmatchedResult(parserData, orgSrcPos);
@@ -44,7 +44,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
 
     @Override
     protected void defaultSemantics(ParserData parserData) {
-        if (getVolatileConfig().isUseTextSemantic()) {
+        if (getVolatileConfig().useTextSemantic()) {
             super.defaultSemantics(parserData);
         } else {
             List<Object> result = new ArrayList<>(parserData.subResults().size());
@@ -85,21 +85,30 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         private int max;
         private boolean useTextSemantic;
 
-        public ParseMultipleSyncConfig(int min, int max, boolean useTextSemantic) {
+        public ParseMultipleSyncConfig min(final int min) {
             this.min = min;
-            this.max = max;
-            this.useTextSemantic = useTextSemantic;
+            return this;
         }
 
-        public int getMin() {
+        public ParseMultipleSyncConfig max(final int max) {
+            this.max = max;
+            return this;
+        }
+
+        public ParseMultipleSyncConfig useTextSemantic(final boolean useTextSemantic) {
+            this.useTextSemantic = useTextSemantic;
+            return this;
+        }
+
+        public int min() {
             return min;
         }
 
-        public int getMax() {
+        public int max() {
             return max;
         }
 
-        public boolean isUseTextSemantic() {
+        public boolean useTextSemantic() {
             return useTextSemantic;
         }
     }

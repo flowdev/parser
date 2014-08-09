@@ -12,15 +12,15 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
 
     @Override
     public void parseSimple(String substring, ParseBlockCommentConfig cfg, ParserData parserData) {
-        if (!substring.startsWith(cfg.getCommentStart())) {
+        if (!substring.startsWith(cfg.commentStart())) {
             fillResultUnmatched(parserData, 0, "Block comment expected.");
             return;
         }
 
-        int pos = cfg.getCommentStart().length();
+        int pos = cfg.commentStart().length();
         int level = 1;
-        int iEnd = substring.indexOf(cfg.getCommentEnd(), pos);
-        int iBeg = substring.indexOf(cfg.getCommentStart(), pos);
+        int iEnd = substring.indexOf(cfg.commentEnd(), pos);
+        int iBeg = substring.indexOf(cfg.commentStart(), pos);
         while (level > 0) {
             if (iEnd < 0) {
                 fillResultUnmatched(parserData, pos, "Block comment isn't closed properly.");
@@ -29,12 +29,12 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
             }
             if (iBeg >= 0 && iBeg < iEnd) {
                 level++;
-                pos = iBeg + cfg.getCommentStart().length();
-                iBeg = substring.indexOf(cfg.getCommentStart(), pos);
+                pos = iBeg + cfg.commentStart().length();
+                iBeg = substring.indexOf(cfg.commentStart(), pos);
             } else {
                 level--;
-                pos = iEnd + cfg.getCommentEnd().length();
-                iEnd = substring.indexOf(cfg.getCommentEnd(), pos);
+                pos = iEnd + cfg.commentEnd().length();
+                iEnd = substring.indexOf(cfg.commentEnd(), pos);
             }
         }
         fillResultMatched(parserData, pos);
@@ -46,19 +46,24 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
     }
 
     public static class ParseBlockCommentConfig {
-        private final String commentStart;
-        private final String commentEnd;
+        private String commentStart;
+        private String commentEnd;
 
-        public ParseBlockCommentConfig(String commentStart, String commentEnd) {
+        public ParseBlockCommentConfig commentStart(final String commentStart) {
             this.commentStart = commentStart;
-            this.commentEnd = commentEnd;
+            return this;
         }
 
-        public String getCommentStart() {
+        public ParseBlockCommentConfig commentEnd(final String commentEnd) {
+            this.commentEnd = commentEnd;
+            return this;
+        }
+
+        public String commentStart() {
             return commentStart;
         }
 
-        public String getCommentEnd() {
+        public String commentEnd() {
             return commentEnd;
         }
     }

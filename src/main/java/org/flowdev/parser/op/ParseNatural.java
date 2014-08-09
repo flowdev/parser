@@ -16,7 +16,7 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
         int i;
         int radix = 10;
         if (cfg != null) {
-            radix = cfg.getRadix();
+            radix = cfg.radix();
         }
 
         //noinspection StatementWithEmptyBody
@@ -41,13 +41,14 @@ public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalCon
     }
 
     public static class ParseNaturalConfig {
-        private final int radix;
+        private int radix;
 
-        public ParseNaturalConfig(int r) {
-            this.radix = r;
+        public ParseNaturalConfig radix(final int radix) {
+            this.radix = radix;
+            return this;
         }
 
-        public int getRadix() {
+        public int radix() {
             return radix;
         }
     }

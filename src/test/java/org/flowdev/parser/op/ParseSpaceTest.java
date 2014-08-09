@@ -15,8 +15,8 @@ public class ParseSpaceTest extends ParseSimpleTest<ParseSpaceConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseSpaceConfig incNlCfg = new ParseSpaceConfig(true);
-        ParseSpaceConfig excNlCfg = new ParseSpaceConfig(false);
+        ParseSpaceConfig incNlCfg = new ParseSpaceConfig().acceptNewline(true);
+        ParseSpaceConfig excNlCfg = new ParseSpaceConfig().acceptNewline(false);
         return asList( //
                 makeTestData("no match", 0, "ba", incNlCfg, 0, 0, null, 0, 1), //
                 makeTestData("no match", 0, "ba", excNlCfg, 0, 0, null, 0, 1), //

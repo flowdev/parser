@@ -8,6 +8,7 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
 import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
 
 @RunWith(Parameterized.class)
@@ -15,10 +16,10 @@ public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConf
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseMultipleSyncConfig config0_1 = new ParseMultipleSyncConfig(0, 1, false);
-        ParseMultipleSyncConfig config0_n = new ParseMultipleSyncConfig(0, Integer.MAX_VALUE, true);
-        ParseMultipleSyncConfig config1_n = new ParseMultipleSyncConfig(1, Integer.MAX_VALUE, false);
-        ParseMultipleSyncConfig config2_3 = new ParseMultipleSyncConfig(2, 3, true);
+        ParseMultipleSyncConfig config0_1 = new ParseMultipleSyncConfig().min(0).max(1).useTextSemantic(false);
+        ParseMultipleSyncConfig config0_n = new ParseMultipleSyncConfig().min(0).max(Integer.MAX_VALUE).useTextSemantic(true);
+        ParseMultipleSyncConfig config1_n = new ParseMultipleSyncConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(false);
+        ParseMultipleSyncConfig config2_3 = new ParseMultipleSyncConfig().min(2).max(3).useTextSemantic(true);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
                 makeTestData("0-1: no match", 0, " flow", config0_1, -1, 0, "", 0, 0), //
@@ -45,7 +46,7 @@ public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConf
 
     @Override
     protected BaseParser<ParserData, ParseMultipleSyncConfig> makeParser(ParserParams<ParserData> params) {
-        ParseLiteral.ParseLiteralConfig literalConfig = new ParseLiteral.ParseLiteralConfig("flow");
+        ParseLiteralConfig literalConfig = new ParseLiteralConfig().literal("flow");
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         parseLiteral.getConfigPort().send(literalConfig);
 

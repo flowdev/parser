@@ -13,7 +13,7 @@ public class ParseLiteral<T> extends ParseSimple<T, ParseLiteral.ParseLiteralCon
 
     @Override
     public void parseSimple(String substring, ParseLiteralConfig cfg, ParserData parserData) {
-        String literal = cfg.getLiteral();
+        String literal = cfg.literal();
         if (substring.startsWith(literal)) {
             fillResultMatched(parserData, literal.length());
         } else {
@@ -22,13 +22,14 @@ public class ParseLiteral<T> extends ParseSimple<T, ParseLiteral.ParseLiteralCon
     }
 
     public static class ParseLiteralConfig {
-        private final String literal;
+        private String literal;
 
-        public ParseLiteralConfig(String literal) {
+        public ParseLiteralConfig literal(final String literal) {
             this.literal = literal;
+            return this;
         }
 
-        public String getLiteral() {
+        public String literal() {
             return literal;
         }
     }

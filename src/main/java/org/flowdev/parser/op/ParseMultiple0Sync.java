@@ -8,8 +8,8 @@ import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
 
 public class ParseMultiple0Sync<T> implements ParserOp<T, UseTextSemanticConfig> {
     private ParseMultipleSync<T> parseMultiple;
-    private Port<UseTextSemanticConfig> configPort = (data) ->
-            parseMultiple.getConfigPort().send(new ParseMultipleSyncConfig(0, Integer.MAX_VALUE, data.useTextSemantic()));
+    private Port<UseTextSemanticConfig> configPort = (config) ->
+            parseMultiple.getConfigPort().send(new ParseMultipleSyncConfig().min(0).max(Integer.MAX_VALUE).useTextSemantic(config.useTextSemantic()));
 
     public ParseMultiple0Sync(ParserParams<T> params) {
         parseMultiple = new ParseMultipleSync<>(params);

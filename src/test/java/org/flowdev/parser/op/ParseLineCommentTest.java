@@ -8,13 +8,14 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseLineComment.ParseLineCommentConfig;
 
 @RunWith(Parameterized.class)
-public class ParseLineCommentTest extends ParseSimpleTest<ParseLineComment.ParseLineCommentConfig> {
+public class ParseLineCommentTest extends ParseSimpleTest<ParseLineCommentConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseLineComment.ParseLineCommentConfig config = new ParseLineComment.ParseLineCommentConfig("//");
+        ParseLineCommentConfig config = new ParseLineCommentConfig().commentStart("//");
         return asList( //
                 makeTestData("no match", 0, " // ", config, 0, 0, null, 0, 1), //
                 makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
@@ -25,13 +26,13 @@ public class ParseLineCommentTest extends ParseSimpleTest<ParseLineComment.Parse
         );
     }
 
-    public ParseLineCommentTest(ParserData parserData, ParseLineComment.ParseLineCommentConfig config, ParseResult expectedResult,
+    public ParseLineCommentTest(ParserData parserData, ParseLineCommentConfig config, ParseResult expectedResult,
                                 int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseLineComment.ParseLineCommentConfig> makeParser(ParserParams<ParserData> params) {
+    protected ParseSimple<ParserData, ParseLineCommentConfig> makeParser(ParserParams<ParserData> params) {
         return new ParseLineComment<>(params);
     }
 }

@@ -35,10 +35,10 @@ public class ParseAllSyncTest extends ParseSimpleTest<UseTextSemanticConfig> {
     @Override
     protected BaseParser<ParserData, UseTextSemanticConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral<ParserData> parseLiteralFlow = new ParseLiteral<>(params);
-        parseLiteralFlow.getConfigPort().send(new ParseLiteralConfig("flow"));
+        parseLiteralFlow.getConfigPort().send(new ParseLiteralConfig().literal("flow"));
 
         ParseLiteral<ParserData> parseLiteralNo = new ParseLiteral<>(params);
-        parseLiteralNo.getConfigPort().send(new ParseLiteralConfig("no"));
+        parseLiteralNo.getConfigPort().send(new ParseLiteralConfig().literal("no"));
 
         ParseAllSync<ParserData> parseAll = new ParseAllSync<>(params);
         parseAll.setSubOutPort(0, parseLiteralFlow.getInPort());

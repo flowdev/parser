@@ -9,6 +9,7 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
 
 @RunWith(Parameterized.class)
 public class ParseAlternativesSyncTest extends ParseSimpleTest<UseTextSemanticConfig> {
@@ -33,10 +34,10 @@ public class ParseAlternativesSyncTest extends ParseSimpleTest<UseTextSemanticCo
     @Override
     protected BaseParser<ParserData, UseTextSemanticConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral<ParserData> parseLiteralFlow = new ParseLiteral<>(params);
-        parseLiteralFlow.getConfigPort().send(new ParseLiteral.ParseLiteralConfig("flow"));
+        parseLiteralFlow.getConfigPort().send(new ParseLiteralConfig().literal("flow"));
 
         ParseLiteral<ParserData> parseLiteralNo = new ParseLiteral<>(params);
-        parseLiteralNo.getConfigPort().send(new ParseLiteral.ParseLiteralConfig("no"));
+        parseLiteralNo.getConfigPort().send(new ParseLiteralConfig().literal("no"));
 
         ParseAlternativesSync<ParserData> parseAlternatives = new ParseAlternativesSync<>(params);
         parseAlternatives.setSubOutPort(0, parseLiteralFlow.getInPort());

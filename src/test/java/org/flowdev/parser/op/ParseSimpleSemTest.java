@@ -11,31 +11,32 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 
 import static java.util.Arrays.asList;
+import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
 import static org.flowdev.parser.util.ParserUtil.matched;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 @RunWith(Parameterized.class)
-public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteral.ParseLiteralConfig> {
+public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteralConfig> {
     private static final String EXPECTED_SEM_OBJECT = "SemTestData!";
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseLiteral.ParseLiteralConfig config = new ParseLiteral.ParseLiteralConfig("flow");
+        ParseLiteralConfig config = new ParseLiteralConfig().literal("flow");
         return asList( //
                 makeTestData("no match", 0, " flow", config, 0, 0, null, 0, 1), //
                 makeTestData("match", 0, "flow", config, -1, 0, "flow", 4, 0) //
         );
     }
 
-    public ParseSimpleSemTest(ParserData parserData, ParseLiteral.ParseLiteralConfig config, ParseResult expectedResult,
+    public ParseSimpleSemTest(ParserData parserData, ParseLiteralConfig config, ParseResult expectedResult,
                               int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
         dontRunTests = true;
     }
 
     @Override
-    protected ParseSimple<ParserData, ParseLiteral.ParseLiteralConfig> makeParser(ParserParams<ParserData> params) {
+    protected ParseSimple<ParserData, ParseLiteralConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         FilterOp<ParserData, NoConfig> semantics = new FilterOp<ParserData, NoConfig>() {
             @Override
