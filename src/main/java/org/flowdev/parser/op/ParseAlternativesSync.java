@@ -21,11 +21,11 @@ public class ParseAlternativesSync<T> extends ParseWithMultipleSubOpSync<T, UseT
         boolean matched = false;
 
         for (int i = 0; !matched && i < subOutPorts.size(); i++) {
-            parserData.setResult(null);
+            parserData.result(null);
             subOutPorts.get(i).send(params.setParserData.set(data, parserData));
             data = dataFromSubOp;
             parserData = params.getParserData.get(data);
-            ParseResult result = parserData.getResult();
+            ParseResult result = parserData.result();
             matched = matched(result);
 
             if (!matched) {
@@ -34,7 +34,7 @@ public class ParseAlternativesSync<T> extends ParseWithMultipleSubOpSync<T, UseT
         }
 
         if (!matched) {
-            parserData.getResult().errPos(minErrPos).feedback(allFeedback);
+            parserData.result().errPos(minErrPos).feedback(allFeedback);
         }
 
         return params.setParserData.set(data, parserData);

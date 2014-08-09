@@ -8,27 +8,31 @@ public class ParserData {
     private ParseResult result;
     private List<ParseResult> subResults;
 
-    public SourceData getSource() {
+
+    public ParserData source(final SourceData source) {
+        this.source = source;
+        return this;
+    }
+
+    public ParserData result(final ParseResult result) {
+        this.result = result;
+        return this;
+    }
+
+    public ParserData subResults(final List<ParseResult> subResults) {
+        this.subResults = subResults;
+        return this;
+    }
+
+    public SourceData source() {
         return source;
     }
 
-    public void setSource(SourceData source) {
-        this.source = source;
-    }
-
-    public ParseResult getResult() {
+    public ParseResult result() {
         return result;
     }
 
-    public void setResult(ParseResult result) {
-        this.result = result;
-    }
-
-    public List<ParseResult> getSubResults() {
+    public List<ParseResult> subResults() {
         return subResults;
-    }
-
-    public void setSubResults(List<ParseResult> subResults) {
-        this.subResults = subResults;
     }
 }

@@ -11,10 +11,10 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
     @Override
     protected void filter(T data) {
         ParserData parserData = params.getParserData.get(data);
-        parserData.setResult(new ParseResult());
+        parserData.result(new ParseResult());
         C cfg = getVolatileConfig();
 
-        parseSimple(parserData.getSource().content().substring(parserData.getSource().pos()), cfg, parserData);
+        parseSimple(parserData.source().content().substring(parserData.source().pos()), cfg, parserData);
 
         outPort.send(handleSemantics(data));
     }

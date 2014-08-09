@@ -19,7 +19,7 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
     @Override
     public T parseAnySync(T data, UseTextSemanticConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
-        int orgSrcPos = parserData.getSource().pos();
+        int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(128);
         boolean matched = true;
 
@@ -27,10 +27,10 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
             subOutPorts.get(subResults.size()).send(params.setParserData.set(data, parserData));
             data = dataFromSubOp;
             parserData = params.getParserData.get(data);
-            matched = matched(parserData.getResult());
+            matched = matched(parserData.result());
             if (matched) {
-                subResults.add(parserData.getResult());
-                parserData.setResult(null);
+                subResults.add(parserData.result());
+                parserData.result(null);
             }
         }
 
@@ -50,8 +50,8 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
             super.defaultSemantics(parserData);
         } else {
             List<Object> result =
-                    parserData.getSubResults().stream().map(ParseResult::value).collect(Collectors.toList());
-            parserData.getResult().value(result);
+                    parserData.subResults().stream().map(ParseResult::value).collect(Collectors.toList());
+            parserData.result().value(result);
         }
     }
 
@@ -59,18 +59,14 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
         ParseResult lastSub = subResults.get(subResults.size() - 1);
         int len = lastSub.pos() + lastSub.text().length() - orgSrcPos;
 
-        parserData.setResult(new ParseResult());
-        parserData.getSource().pos(orgSrcPos);
-        parserData.setSubResults(subResults);
+        parserData.result(new ParseResult()).subResults(subResults).source().pos(orgSrcPos);
         fillResultMatched(parserData, len);
     }
 
     private void createUnmatchedResult(ParserData parserData, int orgSrcPos) {
-        ParseResult result = parserData.getResult();
+        ParseResult errResult = parserData.result();
 
-        parserData.setResult(new ParseResult());
-        parserData.getSource().pos(orgSrcPos);
-        parserData.setSubResults(null);
-        fillResultUnmatchedAbsolut(parserData, result.errPos(), result.feedback());
+        parserData.result(new ParseResult()).subResults(null).source().pos(orgSrcPos);
+        fillResultUnmatchedAbsolut(parserData, errResult.errPos(), errResult.feedback());
     }
 }

@@ -20,7 +20,7 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
 
     protected T handleSemantics(T data) {
         ParserData parserData = params.getParserData.get(data);
-        boolean matched = matched(parserData.getResult());
+        boolean matched = matched(parserData.result());
         if (matched) {
             if (semOutPort != null) {
                 semOutPort.send(data);
@@ -30,12 +30,12 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
                 defaultSemantics(parserData);
             }
         }
-        parserData.setSubResults(null);
+        parserData.subResults(null);
         return params.setParserData.set(data, parserData);
     }
 
     protected void defaultSemantics(ParserData data) {
-        data.getResult().value(data.getResult().text());
+        data.result().value(data.result().text());
     }
 
     /**

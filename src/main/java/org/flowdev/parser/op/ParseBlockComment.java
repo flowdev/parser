@@ -24,7 +24,7 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
         while (level > 0) {
             if (iEnd < 0) {
                 fillResultUnmatched(parserData, pos, "Block comment isn't closed properly.");
-                parserData.getSource().pos(parserData.getSource().pos() + pos);
+                parserData.source().pos(parserData.source().pos() + pos);
                 return;
             }
             if (iBeg >= 0 && iBeg < iEnd) {
@@ -42,7 +42,7 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
 
     @Override
     protected void defaultSemantics(ParserData data) {
-        data.getResult().value("");
+        data.result().value("");
     }
 
     public static class ParseBlockCommentConfig {

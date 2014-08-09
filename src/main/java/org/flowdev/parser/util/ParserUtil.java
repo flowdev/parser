@@ -7,22 +7,22 @@ import org.flowdev.parser.data.SourceData;
 
 public abstract class ParserUtil {
     public static void fillResultMatched(ParserData parserData, int len) {
-        ParseResult result = parserData.getResult();
-        int srcPos = parserData.getSource().pos();
+        ParseResult result = parserData.result();
+        int srcPos = parserData.source().pos();
 
-        result.errPos(-1).pos(srcPos).text(parserData.getSource().content().substring(srcPos, srcPos + len));
-        parserData.getSource().pos(srcPos + len);
+        result.errPos(-1).pos(srcPos).text(parserData.source().content().substring(srcPos, srcPos + len));
+        parserData.source().pos(srcPos + len);
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
         Feedback feedback = new Feedback();
-        feedback.errors().add(where(parserData.getSource(), parserData.getResult().errPos()) + message);
+        feedback.errors().add(where(parserData.source(), parserData.result().errPos()) + message);
 
-        fillResultUnmatchedAbsolut(parserData, parserData.getSource().pos() + pos, feedback);
+        fillResultUnmatchedAbsolut(parserData, parserData.source().pos() + pos, feedback);
     }
 
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
-        parserData.getResult().errPos(errPos).pos(parserData.getSource().pos()).text(null).feedback(feedback);
+        parserData.result().errPos(errPos).pos(parserData.source().pos()).text(null).feedback(feedback);
     }
 
     public static String where(SourceData source, int pos) {

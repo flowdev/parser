@@ -22,10 +22,10 @@ public class ParseMultiple1Sync<T> implements ParserOp<T, UseTextSemanticConfig>
             protected void filter(T data) {
                 ParserData parserData = params.getParserData.get(data);
 
-                if (parserData.getSubResults() == null || parserData.getSubResults().isEmpty()) {
-                    parserData.getResult().value(null);
+                if (parserData.subResults() == null || parserData.subResults().isEmpty()) {
+                    parserData.result().value(null);
                 } else {
-                    parserData.getResult().value(parserData.getSubResults().get(0).value());
+                    parserData.result().value(parserData.subResults().get(0).value());
                 }
 
                 outPort.send(params.setParserData.set(data, parserData));

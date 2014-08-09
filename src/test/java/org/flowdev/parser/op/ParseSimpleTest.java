@@ -46,29 +46,28 @@ public abstract class ParseSimpleTest<C> {
             return;
         }
         parser.getInPort().send(parserData);
-        assertEquals("unexpected error position:", expectedResult.errPos(), parserData.getResult().errPos());
-        assertEquals("unexpected source position:", expectedSrcPos, parserData.getSource().pos());
+        assertEquals("unexpected error position:", expectedResult.errPos(), parserData.result().errPos());
+        assertEquals("unexpected source position:", expectedSrcPos, parserData.source().pos());
         if (matched(expectedResult)) {
-            assertEquals("unexpected result position:", expectedResult.pos(), parserData.getResult().pos());
-            assertEquals("unexpected result text:", expectedResult.text(), parserData.getResult().text());
+            assertEquals("unexpected result position:", expectedResult.pos(), parserData.result().pos());
+            assertEquals("unexpected result text:", expectedResult.text(), parserData.result().text());
         }
         assertEquals("unexpected error count:", expectedErrorCount, getActualErrorCount(parserData));
     }
 
     private static int getActualErrorCount(ParserData parserData) {
-        if (parserData.getResult().feedback() == null) {
+        if (parserData.result().feedback() == null) {
             return 0;
         }
-        if (parserData.getResult().feedback().errors() == null) {
+        if (parserData.result().feedback().errors() == null) {
             return 0;
         }
-        return parserData.getResult().feedback().errors().size();
+        return parserData.result().feedback().errors().size();
     }
 
     public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,
                                         int resultPos, String resultText, int newSrcPos, int errorCount) {
-        ParserData parserData = new ParserData();
-        parserData.setSource(new SourceData().name(srcName).pos(srcPos).content(srcContent));
+        ParserData parserData = new ParserData().source(new SourceData().name(srcName).pos(srcPos).content(srcContent));
 
         ParseResult parseResult = new ParseResult().errPos(errPos).pos(resultPos).text(resultText);
 

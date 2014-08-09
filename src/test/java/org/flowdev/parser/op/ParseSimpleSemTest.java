@@ -40,7 +40,7 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteral.ParseLitera
         FilterOp<ParserData, NoConfig> semantics = new FilterOp<ParserData, NoConfig>() {
             @Override
             protected void filter(ParserData data) {
-                data.getResult().value(EXPECTED_SEM_OBJECT);
+                data.result().value(EXPECTED_SEM_OBJECT);
                 outPort.send(data);
             }
         };
@@ -54,10 +54,10 @@ public class ParseSimpleSemTest extends ParseSimpleTest<ParseLiteral.ParseLitera
         dontRunTests = false;
         testParser();
         dontRunTests = true;
-        if (matched(parserData.getResult())) {
-            assertEquals("Parser did match: Semantics should have been called:", EXPECTED_SEM_OBJECT, parserData.getResult().value());
+        if (matched(parserData.result())) {
+            assertEquals("Parser did match: Semantics should have been called:", EXPECTED_SEM_OBJECT, parserData.result().value());
         } else {
-            assertNull("Parser didn't match: Semantics shouldn't have been called:", parserData.getResult().value());
+            assertNull("Parser didn't match: Semantics shouldn't have been called:", parserData.result().value());
         }
     }
 }

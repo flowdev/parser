@@ -17,7 +17,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
     @Override
     public T parseAnySync(T data, ParseMultipleSyncConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
-        int orgSrcPos = parserData.getSource().pos();
+        int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(1024);
         boolean matched = true;
 
@@ -25,10 +25,10 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
             subOutPort.send(params.setParserData.set(data, parserData));
             data = dataFromSubOp;
             parserData = params.getParserData.get(data);
-            matched = matched(parserData.getResult());
+            matched = matched(parserData.result());
             if (matched) {
-                subResults.add(parserData.getResult());
-                parserData.setResult(null);
+                subResults.add(parserData.result());
+                parserData.result(null);
             }
         }
 
@@ -47,9 +47,9 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
         if (getVolatileConfig().isUseTextSemantic()) {
             super.defaultSemantics(parserData);
         } else {
-            List<Object> result = new ArrayList<>(parserData.getSubResults().size());
+            List<Object> result = new ArrayList<>(parserData.subResults().size());
             int n = 0;
-            for (ParseResult subResult : parserData.getSubResults()) {
+            for (ParseResult subResult : parserData.subResults()) {
                 result.add(subResult.value());
                 if (subResult.value() != null) {
                     n++;
@@ -58,7 +58,7 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
             if (n == 0) {
                 result = null;
             }
-            parserData.getResult().value(result);
+            parserData.result().value(result);
         }
     }
 
@@ -69,18 +69,14 @@ public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMulti
             len = lastSub.pos() + lastSub.text().length() - orgSrcPos;
         }
 
-        parserData.setResult(new ParseResult());
-        parserData.getSource().pos(orgSrcPos);
-        parserData.setSubResults(subResults);
+        parserData.result(new ParseResult()).subResults(subResults).source().pos(orgSrcPos);
         fillResultMatched(parserData, len);
     }
 
     private void createUnmatchedResult(ParserData parserData, int orgSrcPos) {
-        ParseResult result = parserData.getResult();
+        ParseResult result = parserData.result();
 
-        parserData.setResult(new ParseResult());
-        parserData.getSource().pos(orgSrcPos);
-        parserData.setSubResults(null);
+        parserData.result(new ParseResult()).subResults(null).source().pos(orgSrcPos);
         fillResultUnmatchedAbsolut(parserData, result.errPos(), result.feedback());
     }
 
