@@ -1,6 +1,5 @@
 package org.flowdev.parser.data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -8,7 +7,6 @@ public class ParserData {
     private SourceData source;
     private ParseResult result;
     private List<ParseResult> subResults;
-    private List<ParserTempData> tempStack = new ArrayList<>(128);
 
     public SourceData getSource() {
         return source;
@@ -32,13 +30,5 @@ public class ParserData {
 
     public void setSubResults(List<ParseResult> subResults) {
         this.subResults = subResults;
-    }
-
-    public List<ParserTempData> getTempStack() {
-        return tempStack;
-    }
-
-    public void setTempStack(List<ParserTempData> tempStack) {
-        this.tempStack = tempStack;
     }
 }
