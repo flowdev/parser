@@ -42,7 +42,7 @@ public class ParseBlockComment<T> extends ParseSimple<T, ParseBlockComment.Parse
 
     @Override
     protected void defaultSemantics(ParserData data) {
-        data.getResult().setValue("");
+        data.getResult().value("");
     }
 
     public static class ParseBlockCommentConfig {

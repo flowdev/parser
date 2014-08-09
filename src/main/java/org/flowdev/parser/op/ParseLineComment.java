@@ -24,7 +24,7 @@ public class ParseLineComment<T> extends ParseSimple<T, ParseLineComment.ParseLi
 
     @Override
     protected void defaultSemantics(ParserData data) {
-        data.getResult().setValue("");
+        data.getResult().value("");
     }
 
     public static class ParseLineCommentConfig {

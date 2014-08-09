@@ -24,6 +24,6 @@ public class ParseEof<T> extends ParseSimple<T, NoConfig> {
 
     @Override
     protected void defaultSemantics(ParserData data) {
-        data.getResult().setValue("");
+        data.getResult().value("");
     }
 }

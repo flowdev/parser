@@ -50,14 +50,14 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
             super.defaultSemantics(parserData);
         } else {
             List<Object> result =
-                    parserData.getSubResults().stream().map(ParseResult::getValue).collect(Collectors.toList());
-            parserData.getResult().setValue(result);
+                    parserData.getSubResults().stream().map(ParseResult::value).collect(Collectors.toList());
+            parserData.getResult().value(result);
         }
     }
 
     private void createMatchedResult(ParserData parserData, List<ParseResult> subResults, int orgSrcPos) {
         ParseResult lastSub = subResults.get(subResults.size() - 1);
-        int len = lastSub.getPos() + lastSub.getText().length() - orgSrcPos;
+        int len = lastSub.pos() + lastSub.text().length() - orgSrcPos;
 
         parserData.setResult(new ParseResult());
         parserData.getSource().pos(orgSrcPos);
@@ -71,6 +71,6 @@ public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemant
         parserData.setResult(new ParseResult());
         parserData.getSource().pos(orgSrcPos);
         parserData.setSubResults(null);
-        fillResultUnmatchedAbsolut(parserData, result.getErrPos(), result.getFeedback());
+        fillResultUnmatchedAbsolut(parserData, result.errPos(), result.feedback());
     }
 }

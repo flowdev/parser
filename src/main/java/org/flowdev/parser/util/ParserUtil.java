@@ -10,25 +10,19 @@ public abstract class ParserUtil {
         ParseResult result = parserData.getResult();
         int srcPos = parserData.getSource().pos();
 
-        result.setErrPos(-1);
-        result.setPos(srcPos);
-        result.setText(parserData.getSource().content().substring(srcPos, srcPos + len));
+        result.errPos(-1).pos(srcPos).text(parserData.getSource().content().substring(srcPos, srcPos + len));
         parserData.getSource().pos(srcPos + len);
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
         Feedback feedback = new Feedback();
-        feedback.errors().add(where(parserData.getSource(), parserData.getResult().getErrPos()) + message);
+        feedback.errors().add(where(parserData.getSource(), parserData.getResult().errPos()) + message);
 
         fillResultUnmatchedAbsolut(parserData, parserData.getSource().pos() + pos, feedback);
     }
 
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
-        ParseResult result = parserData.getResult();
-        result.setErrPos(errPos);
-        result.setPos(parserData.getSource().pos());
-        result.setText(null);
-        result.setFeedback(feedback);
+        parserData.getResult().errPos(errPos).pos(parserData.getSource().pos()).text(null).feedback(feedback);
     }
 
     public static String where(SourceData source, int pos) {
@@ -93,6 +87,6 @@ public abstract class ParserUtil {
     }
 
     public static boolean matched(ParseResult result) {
-        return result.getErrPos() < 0;
+        return result.errPos() < 0;
     }
 }

@@ -23,9 +23,9 @@ public class ParseMultiple1Sync<T> implements ParserOp<T, UseTextSemanticConfig>
                 ParserData parserData = params.getParserData.get(data);
 
                 if (parserData.getSubResults() == null || parserData.getSubResults().isEmpty()) {
-                    parserData.getResult().setValue(null);
+                    parserData.getResult().value(null);
                 } else {
-                    parserData.getResult().setValue(parserData.getSubResults().get(0).getValue());
+                    parserData.getResult().value(parserData.getSubResults().get(0).value());
                 }
 
                 outPort.send(params.setParserData.set(data, parserData));

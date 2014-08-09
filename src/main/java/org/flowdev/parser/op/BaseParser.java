@@ -35,7 +35,7 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
     }
 
     protected void defaultSemantics(ParserData data) {
-        data.getResult().setValue(data.getResult().getText());
+        data.getResult().value(data.getResult().text());
     }
 
     /**

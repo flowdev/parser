@@ -46,23 +46,23 @@ public abstract class ParseSimpleTest<C> {
             return;
         }
         parser.getInPort().send(parserData);
-        assertEquals("unexpected error position:", expectedResult.getErrPos(), parserData.getResult().getErrPos());
+        assertEquals("unexpected error position:", expectedResult.errPos(), parserData.getResult().errPos());
         assertEquals("unexpected source position:", expectedSrcPos, parserData.getSource().pos());
         if (matched(expectedResult)) {
-            assertEquals("unexpected result position:", expectedResult.getPos(), parserData.getResult().getPos());
-            assertEquals("unexpected result text:", expectedResult.getText(), parserData.getResult().getText());
+            assertEquals("unexpected result position:", expectedResult.pos(), parserData.getResult().pos());
+            assertEquals("unexpected result text:", expectedResult.text(), parserData.getResult().text());
         }
         assertEquals("unexpected error count:", expectedErrorCount, getActualErrorCount(parserData));
     }
 
     private static int getActualErrorCount(ParserData parserData) {
-        if (parserData.getResult().getFeedback() == null) {
+        if (parserData.getResult().feedback() == null) {
             return 0;
         }
-        if (parserData.getResult().getFeedback().errors() == null) {
+        if (parserData.getResult().feedback().errors() == null) {
             return 0;
         }
-        return parserData.getResult().getFeedback().errors().size();
+        return parserData.getResult().feedback().errors().size();
     }
 
     public static Object[] makeTestData(String srcName, int srcPos, String srcContent, Object config, int errPos,
@@ -70,10 +70,7 @@ public abstract class ParseSimpleTest<C> {
         ParserData parserData = new ParserData();
         parserData.setSource(new SourceData().name(srcName).pos(srcPos).content(srcContent));
 
-        ParseResult parseResult = new ParseResult();
-        parseResult.setErrPos(errPos);
-        parseResult.setPos(resultPos);
-        parseResult.setText(resultText);
+        ParseResult parseResult = new ParseResult().errPos(errPos).pos(resultPos).text(resultText);
 
         return new Object[]{parserData, config, parseResult, newSrcPos, errorCount};
     }

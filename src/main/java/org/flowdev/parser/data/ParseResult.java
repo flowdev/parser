@@ -11,43 +11,48 @@ public class ParseResult {
     private Feedback feedback;
 
 
-    public int getPos() {
+    public ParseResult pos(final int pos) {
+        this.pos = pos;
+        return this;
+    }
+
+    public ParseResult text(final String text) {
+        this.text = text;
+        return this;
+    }
+
+    public ParseResult value(final Object value) {
+        this.value = value;
+        return this;
+    }
+
+    public ParseResult errPos(final int errPos) {
+        this.errPos = errPos;
+        return this;
+    }
+
+    public ParseResult feedback(final Feedback feedback) {
+        this.feedback = feedback;
+        return this;
+    }
+
+    public int pos() {
         return pos;
     }
 
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
-    public String getText() {
+    public String text() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Object getValue() {
+    public Object value() {
         return value;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    public int getErrPos() {
+    public int errPos() {
         return errPos;
     }
 
-    public void setErrPos(int errPos) {
-        this.errPos = errPos;
-    }
-
-    public Feedback getFeedback() {
+    public Feedback feedback() {
         return feedback;
-    }
-
-    public void setFeedback(Feedback feedback) {
-        this.feedback = feedback;
     }
 }
