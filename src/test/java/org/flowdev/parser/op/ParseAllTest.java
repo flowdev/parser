@@ -12,22 +12,23 @@ import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
 
 @RunWith(Parameterized.class)
-public class ParseAlternativesSyncTest extends ParseSimpleTest<UseTextSemanticConfig> {
+public class ParseAllTest extends ParseSimpleTest<UseTextSemanticConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        UseTextSemanticConfig config = new UseTextSemanticConfig().useTextSemantic(false);
+        UseTextSemanticConfig config = new UseTextSemanticConfig().useTextSemantic(true);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
-                makeTestData("empty", 0, "", config, 0, 0, null, 0, 2), //
-                makeTestData("no match", 0, " flow no", config, 0, 0, null, 0, 2), //
-                makeTestData("match flow", 0, "flowabc", config, -1, 0, "flow", 4, 0), //
-                makeTestData("match no", 3, "123noabc", config, -1, 3, "no", 5, 0) //
+                makeTestData("empty", 0, "", config, 0, 0, null, 0, 1), //
+                makeTestData("no match", 0, " flow no", config, 0, 0, null, 0, 1), //
+                makeTestData("match flow", 0, "flowabc", config, 4, 0, null, 0, 1), //
+                makeTestData("match no", 3, "123noabc", config, 3, 0, null, 3, 1), //
+                makeTestData("match all", 3, "123flownoabc", config, -1, 3, "flowno", 9, 0) //
         );
     }
 
-    public ParseAlternativesSyncTest(ParserData parserData, UseTextSemanticConfig config, ParseResult expectedResult,
-                                     int expectedSrcPos, int expectedErrorCount) {
+    public ParseAllTest(ParserData parserData, UseTextSemanticConfig config, ParseResult expectedResult,
+                        int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
@@ -39,12 +40,12 @@ public class ParseAlternativesSyncTest extends ParseSimpleTest<UseTextSemanticCo
         ParseLiteral<ParserData> parseLiteralNo = new ParseLiteral<>(params);
         parseLiteralNo.getConfigPort().send(new ParseLiteralConfig().literal("no"));
 
-        ParseAlternativesSync<ParserData> parseAlternatives = new ParseAlternativesSync<>(params);
-        parseAlternatives.setSubOutPort(0, parseLiteralFlow.getInPort());
-        parseAlternatives.setSubOutPort(1, parseLiteralNo.getInPort());
-        parseLiteralFlow.setOutPort(parseAlternatives.getSubInPort());
-        parseLiteralNo.setOutPort(parseAlternatives.getSubInPort());
+        ParseAll<ParserData> parseAll = new ParseAll<>(params);
+        parseAll.setSubOutPort(0, parseLiteralFlow.getInPort());
+        parseAll.setSubOutPort(1, parseLiteralNo.getInPort());
+        parseLiteralFlow.setOutPort(parseAll.getSubInPort());
+        parseLiteralNo.setOutPort(parseAll.getSubInPort());
 
-        return parseAlternatives;
+        return parseAll;
     }
 }

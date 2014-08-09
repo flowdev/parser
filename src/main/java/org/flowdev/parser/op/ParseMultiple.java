@@ -9,8 +9,8 @@ import java.util.List;
 import static org.flowdev.parser.util.ParserUtil.*;
 
 
-public class ParseMultipleSync<T> extends ParseWithSingleSubOpSync<T, ParseMultipleSync.ParseMultipleSyncConfig> {
-    public ParseMultipleSync(ParserParams<T> params) {
+public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.ParseMultipleSyncConfig> {
+    public ParseMultiple(ParserParams<T> params) {
         super(params);
     }
 

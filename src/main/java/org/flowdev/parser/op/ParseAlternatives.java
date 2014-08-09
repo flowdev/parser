@@ -8,8 +8,8 @@ import org.flowdev.parser.data.UseTextSemanticConfig;
 import static org.flowdev.parser.util.ParserUtil.matched;
 
 
-public class ParseAlternativesSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemanticConfig> {
-    public ParseAlternativesSync(ParserParams<T> params) {
+public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, UseTextSemanticConfig> {
+    public ParseAlternatives(ParserParams<T> params) {
         super(params);
     }
 

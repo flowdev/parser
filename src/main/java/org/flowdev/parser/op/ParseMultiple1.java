@@ -8,15 +8,15 @@ import org.flowdev.base.op.FilterOp;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.UseTextSemanticConfig;
 
-import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
+import static org.flowdev.parser.op.ParseMultiple.ParseMultipleSyncConfig;
 
-public class ParseMultiple1Sync<T> implements ParserOp<T, UseTextSemanticConfig> {
-    private ParseMultipleSync<T> parseMultiple;
+public class ParseMultiple1<T> implements ParserOp<T, UseTextSemanticConfig> {
+    private ParseMultiple<T> parseMultiple;
     private Port<UseTextSemanticConfig> configPort = (config) ->
             parseMultiple.getConfigPort().send(new ParseMultipleSyncConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(config.useTextSemantic()));
 
-    public ParseMultiple1Sync(ParserParams<T> params) {
-        parseMultiple = new ParseMultipleSync<>(params);
+    public ParseMultiple1(ParserParams<T> params) {
+        parseMultiple = new ParseMultiple<>(params);
         Filter<T, NoConfig> semantics = new FilterOp<T, NoConfig>() {
             @Override
             protected void filter(T data) {

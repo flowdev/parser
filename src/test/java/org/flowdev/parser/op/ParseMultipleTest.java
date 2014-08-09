@@ -9,10 +9,10 @@ import java.util.Collection;
 
 import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
-import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
+import static org.flowdev.parser.op.ParseMultiple.ParseMultipleSyncConfig;
 
 @RunWith(Parameterized.class)
-public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConfig> {
+public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleSyncConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
@@ -39,8 +39,8 @@ public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConf
         );
     }
 
-    public ParseMultipleSyncTest(ParserData parserData, ParseMultipleSyncConfig config, ParseResult expectedResult,
-                                 int expectedSrcPos, int expectedErrorCount) {
+    public ParseMultipleTest(ParserData parserData, ParseMultipleSyncConfig config, ParseResult expectedResult,
+                             int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
@@ -50,7 +50,7 @@ public class ParseMultipleSyncTest extends ParseSimpleTest<ParseMultipleSyncConf
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         parseLiteral.getConfigPort().send(literalConfig);
 
-        ParseMultipleSync<ParserData> parseMultiple = new ParseMultipleSync<>(params);
+        ParseMultiple<ParserData> parseMultiple = new ParseMultiple<>(params);
         parseMultiple.setSubOutPort(parseLiteral.getInPort());
         parseLiteral.setOutPort(parseMultiple.getSubInPort());
         return parseMultiple;

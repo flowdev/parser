@@ -4,15 +4,15 @@ package org.flowdev.parser.op;
 import org.flowdev.base.Port;
 import org.flowdev.parser.data.UseTextSemanticConfig;
 
-import static org.flowdev.parser.op.ParseMultipleSync.ParseMultipleSyncConfig;
+import static org.flowdev.parser.op.ParseMultiple.ParseMultipleSyncConfig;
 
-public class ParseMultiple0Sync<T> implements ParserOp<T, UseTextSemanticConfig> {
-    private ParseMultipleSync<T> parseMultiple;
+public class ParseMultiple0<T> implements ParserOp<T, UseTextSemanticConfig> {
+    private ParseMultiple<T> parseMultiple;
     private Port<UseTextSemanticConfig> configPort = (config) ->
             parseMultiple.getConfigPort().send(new ParseMultipleSyncConfig().min(0).max(Integer.MAX_VALUE).useTextSemantic(config.useTextSemantic()));
 
-    public ParseMultiple0Sync(ParserParams<T> params) {
-        parseMultiple = new ParseMultipleSync<>(params);
+    public ParseMultiple0(ParserParams<T> params) {
+        parseMultiple = new ParseMultiple<>(params);
         this.getConfigPort().send(new UseTextSemanticConfig().useTextSemantic(false));
     }
 

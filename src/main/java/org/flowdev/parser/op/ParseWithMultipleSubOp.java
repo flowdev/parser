@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class ParseWithMultipleSubOpSync<T, C> extends ParseAnySync<T, C> {
+public abstract class ParseWithMultipleSubOp<T, C> extends ParseAny<T, C> {
     protected T dataFromSubOp;
     protected List<Port<T>> subOutPorts = new ArrayList<>();
     protected Port<T> subInPort = (data) -> dataFromSubOp = data;
 
-    public ParseWithMultipleSubOpSync(ParserParams<T> params) {
+    public ParseWithMultipleSubOp(ParserParams<T> params) {
         super(params);
     }
 

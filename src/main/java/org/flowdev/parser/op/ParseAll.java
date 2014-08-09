@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import static org.flowdev.parser.util.ParserUtil.*;
 
 
-public class ParseAllSync<T> extends ParseWithMultipleSubOpSync<T, UseTextSemanticConfig> {
-    public ParseAllSync(ParserParams<T> params) {
+public class ParseAll<T> extends ParseWithMultipleSubOp<T, UseTextSemanticConfig> {
+    public ParseAll(ParserParams<T> params) {
         super(params);
     }
 

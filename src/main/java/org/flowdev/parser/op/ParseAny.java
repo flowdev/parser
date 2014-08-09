@@ -2,8 +2,8 @@ package org.flowdev.parser.op;
 
 import org.flowdev.parser.data.ParserData;
 
-public abstract class ParseAnySync<T, C> extends BaseParser<T, C> {
-    protected ParseAnySync(ParserParams<T> params) {
+public abstract class ParseAny<T, C> extends BaseParser<T, C> {
+    protected ParseAny(ParserParams<T> params) {
         super(params);
     }
 

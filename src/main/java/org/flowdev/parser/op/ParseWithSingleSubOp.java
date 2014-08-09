@@ -3,12 +3,12 @@ package org.flowdev.parser.op;
 import org.flowdev.base.Port;
 
 
-public abstract class ParseWithSingleSubOpSync<T, C> extends ParseAnySync<T, C> {
+public abstract class ParseWithSingleSubOp<T, C> extends ParseAny<T, C> {
     protected T dataFromSubOp;
     protected Port<T> subOutPort;
     protected Port<T> subInPort = (data) -> dataFromSubOp = data;
 
-    public ParseWithSingleSubOpSync(ParserParams<T> params) {
+    public ParseWithSingleSubOp(ParserParams<T> params) {
         super(params);
     }
 
