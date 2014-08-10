@@ -2,38 +2,17 @@ package org.flowdev.parser.op;
 
 
 import org.flowdev.base.Port;
-import org.flowdev.base.data.NoConfig;
-import org.flowdev.base.op.Filter;
-import org.flowdev.base.op.FilterOp;
-import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.UseTextSemanticConfig;
 
-import static org.flowdev.parser.op.ParseMultiple.ParseMultipleSyncConfig;
+import static org.flowdev.parser.op.ParseMultiple.ParseMultipleConfig;
 
 public class ParseMultiple1<T> implements ParserOp<T, UseTextSemanticConfig> {
     private ParseMultiple<T> parseMultiple;
     private Port<UseTextSemanticConfig> configPort = (config) ->
-            parseMultiple.getConfigPort().send(new ParseMultipleSyncConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(config.useTextSemantic()));
+            parseMultiple.getConfigPort().send(new ParseMultipleConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(config.useTextSemantic()));
 
     public ParseMultiple1(ParserParams<T> params) {
         parseMultiple = new ParseMultiple<>(params);
-        Filter<T, NoConfig> semantics = new FilterOp<T, NoConfig>() {
-            @Override
-            protected void filter(T data) {
-                ParserData parserData = params.getParserData.get(data);
-
-                if (parserData.subResults() == null || parserData.subResults().isEmpty()) {
-                    parserData.result().value(null);
-                } else {
-                    parserData.result().value(parserData.subResults().get(0).value());
-                }
-
-                outPort.send(params.setParserData.set(data, parserData));
-            }
-        };
-
-        parseMultiple.setSemOutPort(semantics.getInPort());
-        semantics.setOutPort(parseMultiple.getSemInPort());
 
         this.getConfigPort().send(new UseTextSemanticConfig().useTextSemantic(false));
     }

@@ -9,13 +9,13 @@ import java.util.List;
 import static org.flowdev.parser.util.ParserUtil.*;
 
 
-public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.ParseMultipleSyncConfig> {
+public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.ParseMultipleConfig> {
     public ParseMultiple(ParserParams<T> params) {
         super(params);
     }
 
     @Override
-    public T parseAnySync(T data, ParseMultipleSyncConfig cfg) {
+    public T parseAnySync(T data, ParseMultipleConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(1024);
@@ -80,22 +80,22 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         fillResultUnmatchedAbsolut(parserData, result.errPos(), result.feedback());
     }
 
-    public static class ParseMultipleSyncConfig {
+    public static class ParseMultipleConfig {
         private int min;
         private int max;
         private boolean useTextSemantic;
 
-        public ParseMultipleSyncConfig min(final int min) {
+        public ParseMultipleConfig min(final int min) {
             this.min = min;
             return this;
         }
 
-        public ParseMultipleSyncConfig max(final int max) {
+        public ParseMultipleConfig max(final int max) {
             this.max = max;
             return this;
         }
 
-        public ParseMultipleSyncConfig useTextSemantic(final boolean useTextSemantic) {
+        public ParseMultipleConfig useTextSemantic(final boolean useTextSemantic) {
             this.useTextSemantic = useTextSemantic;
             return this;
         }

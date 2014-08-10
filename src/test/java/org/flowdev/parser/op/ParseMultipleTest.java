@@ -9,17 +9,17 @@ import java.util.Collection;
 
 import static java.util.Arrays.asList;
 import static org.flowdev.parser.op.ParseLiteral.ParseLiteralConfig;
-import static org.flowdev.parser.op.ParseMultiple.ParseMultipleSyncConfig;
+import static org.flowdev.parser.op.ParseMultiple.ParseMultipleConfig;
 
 @RunWith(Parameterized.class)
-public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleSyncConfig> {
+public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleConfig> {
 
     @Parameterized.Parameters
     public static Collection<?> generateTestDatas() {
-        ParseMultipleSyncConfig config0_1 = new ParseMultipleSyncConfig().min(0).max(1).useTextSemantic(false);
-        ParseMultipleSyncConfig config0_n = new ParseMultipleSyncConfig().min(0).max(Integer.MAX_VALUE).useTextSemantic(true);
-        ParseMultipleSyncConfig config1_n = new ParseMultipleSyncConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(false);
-        ParseMultipleSyncConfig config2_3 = new ParseMultipleSyncConfig().min(2).max(3).useTextSemantic(true);
+        ParseMultipleConfig config0_1 = new ParseMultipleConfig().min(0).max(1).useTextSemantic(false);
+        ParseMultipleConfig config0_n = new ParseMultipleConfig().min(0).max(Integer.MAX_VALUE).useTextSemantic(true);
+        ParseMultipleConfig config1_n = new ParseMultipleConfig().min(1).max(Integer.MAX_VALUE).useTextSemantic(false);
+        ParseMultipleConfig config2_3 = new ParseMultipleConfig().min(2).max(3).useTextSemantic(true);
         return asList( //
                 // name, srcPos, content, config, errPos, resultPos, resultText, newSrcPos, errCount
                 makeTestData("0-1: no match", 0, " flow", config0_1, -1, 0, "", 0, 0), //
@@ -39,13 +39,13 @@ public class ParseMultipleTest extends ParseSimpleTest<ParseMultipleSyncConfig> 
         );
     }
 
-    public ParseMultipleTest(ParserData parserData, ParseMultipleSyncConfig config, ParseResult expectedResult,
+    public ParseMultipleTest(ParserData parserData, ParseMultipleConfig config, ParseResult expectedResult,
                              int expectedSrcPos, int expectedErrorCount) {
         super(parserData, config, expectedResult, expectedSrcPos, expectedErrorCount);
     }
 
     @Override
-    protected BaseParser<ParserData, ParseMultipleSyncConfig> makeParser(ParserParams<ParserData> params) {
+    protected BaseParser<ParserData, ParseMultipleConfig> makeParser(ParserParams<ParserData> params) {
         ParseLiteralConfig literalConfig = new ParseLiteralConfig().literal("flow");
         ParseLiteral<ParserData> parseLiteral = new ParseLiteral<>(params);
         parseLiteral.getConfigPort().send(literalConfig);
