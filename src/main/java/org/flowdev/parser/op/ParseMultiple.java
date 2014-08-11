@@ -15,7 +15,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     }
 
     @Override
-    public T parseAnySync(T data, ParseMultipleConfig cfg) {
+    public T parseAny(T data, ParseMultipleConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(1024);

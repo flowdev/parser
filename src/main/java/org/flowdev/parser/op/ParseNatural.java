@@ -9,15 +9,13 @@ import static org.flowdev.parser.util.ParserUtil.fillResultUnmatched;
 public class ParseNatural<T> extends ParseSimple<T, ParseNatural.ParseNaturalConfig> {
     public ParseNatural(ParserParams<T> params) {
         super(params);
+        getConfigPort().send(new ParseNaturalConfig().radix(10));
     }
 
     @Override
     public void parseSimple(String substring, ParseNaturalConfig cfg, ParserData parserData) {
         int i;
-        int radix = 10;
-        if (cfg != null) {
-            radix = cfg.radix();
-        }
+        int radix = cfg.radix();
 
         //noinspection StatementWithEmptyBody
         for (i = 0; i < substring.length() && Character.digit(substring.charAt(i), radix) >= 0; i++) {

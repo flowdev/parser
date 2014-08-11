@@ -14,10 +14,11 @@ import static org.flowdev.parser.util.ParserUtil.*;
 public class ParseAll<T> extends ParseWithMultipleSubOp<T, UseTextSemanticConfig> {
     public ParseAll(ParserParams<T> params) {
         super(params);
+        getConfigPort().send(new UseTextSemanticConfig().useTextSemantic(false));
     }
 
     @Override
-    public T parseAnySync(T data, UseTextSemanticConfig cfg) {
+    public T parseAny(T data, UseTextSemanticConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(128);

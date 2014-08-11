@@ -11,10 +11,11 @@ import static org.flowdev.parser.util.ParserUtil.matched;
 public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, UseTextSemanticConfig> {
     public ParseAlternatives(ParserParams<T> params) {
         super(params);
+        getConfigPort().send(new UseTextSemanticConfig().useTextSemantic(false));
     }
 
     @Override
-    public T parseAnySync(T data, UseTextSemanticConfig cfg) {
+    public T parseAny(T data, UseTextSemanticConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         Feedback allFeedback = new Feedback();
         int minErrPos = Integer.MAX_VALUE;

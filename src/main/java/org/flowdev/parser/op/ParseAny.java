@@ -11,7 +11,7 @@ public abstract class ParseAny<T, C> extends BaseParser<T, C> {
     protected void filter(T data) {
         C cfg = getVolatileConfig();
 
-        data = parseAnySync(data, cfg);
+        data = parseAny(data, cfg);
 
         outPort.send(handleSemantics(data));
     }
@@ -20,5 +20,5 @@ public abstract class ParseAny<T, C> extends BaseParser<T, C> {
         super.defaultSemantics(data);
     }
 
-    public abstract T parseAnySync(T data, C cfg);
+    public abstract T parseAny(T data, C cfg);
 }
