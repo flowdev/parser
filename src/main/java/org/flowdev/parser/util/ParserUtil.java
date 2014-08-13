@@ -21,6 +21,15 @@ public abstract class ParserUtil {
         fillResultUnmatchedAbsolut(parserData, parserData.source().pos() + pos, feedback);
     }
 
+    public static void addError(ParserData parserData, String message) {
+        if (parserData.result().feedback() == null) {
+            parserData.result().feedback(new Feedback());
+        }
+        parserData.source().pos(parserData.result().pos());
+        parserData.result().errPos(parserData.result().pos()).text(null).value(null).feedback()
+                .errors().add(where(parserData.source(), parserData.result().errPos()) + message);
+    }
+
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
         parserData.result().errPos(errPos).pos(parserData.source().pos()).text(null).feedback(feedback);
     }
