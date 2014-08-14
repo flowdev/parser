@@ -21,7 +21,7 @@ public class ParseAll<T> extends ParseWithMultipleSubOp<T, UseTextSemanticConfig
     public T parseAny(T data, UseTextSemanticConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         int orgSrcPos = parserData.source().pos();
-        List<ParseResult> subResults = new ArrayList<>(128);
+        List<ParseResult> subResults = new ArrayList<>(subOutPorts.size());
         boolean matched = true;
 
         while (matched && subResults.size() < subOutPorts.size()) {

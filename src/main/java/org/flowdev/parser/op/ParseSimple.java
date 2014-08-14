@@ -16,7 +16,7 @@ public abstract class ParseSimple<T, C> extends BaseParser<T, C> {
 
         parseSimple(parserData.source().content().substring(parserData.source().pos()), cfg, parserData);
 
-        outPort.send(handleSemantics(data));
+        outPort.send(handleSemantics(params.setParserData.set(data, parserData)));
     }
 
     public abstract void parseSimple(String substring, C cfg, ParserData parserData);
