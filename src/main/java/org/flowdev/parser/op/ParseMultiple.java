@@ -19,7 +19,7 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
     public T parseAny(T data, ParseMultipleConfig cfg) {
         ParserData parserData = params.getParserData.get(data);
         int orgSrcPos = parserData.source().pos();
-        List<ParseResult> subResults = new ArrayList<>(min(cfg.max(), 1024));
+        List<ParseResult> subResults = new ArrayList<>(min(cfg.max(), 128));
         boolean matched = true;
 
         while (matched && subResults.size() < cfg.max()) {

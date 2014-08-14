@@ -15,10 +15,11 @@ public abstract class ParserUtil {
     }
 
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
+        int errPos = parserData.source().pos() + pos;
         Feedback feedback = new Feedback();
-        feedback.errors().add(where(parserData.source(), parserData.result().errPos()) + message);
+        feedback.errors().add(where(parserData.source(), errPos) + message);
 
-        fillResultUnmatchedAbsolut(parserData, parserData.source().pos() + pos, feedback);
+        fillResultUnmatchedAbsolut(parserData, errPos, feedback);
     }
 
     public static void addError(ParserData parserData, String message) {
