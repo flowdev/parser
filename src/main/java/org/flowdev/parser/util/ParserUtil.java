@@ -31,6 +31,14 @@ public abstract class ParserUtil {
                 .errors().add(where(parserData.source(), parserData.result().errPos()) + message);
     }
 
+    public static void addSemanticError(ParserData parserData, int pos, String message) {
+        if (parserData.result().feedback() == null) {
+            parserData.result().feedback(new Feedback());
+        }
+        parserData.result().text(null).value(null).feedback()
+                .errors().add(where(parserData.source(), pos) + message);
+    }
+
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
         parserData.result().errPos(errPos).pos(parserData.source().pos()).text(null).feedback(feedback);
     }
@@ -98,5 +106,9 @@ public abstract class ParserUtil {
 
     public static boolean matched(ParseResult result) {
         return result.errPos() < 0;
+    }
+
+    public static boolean isOk(ParseResult result) {
+        return result.feedback() == null || result.feedback().errors() == null || result.feedback().errors().isEmpty();
     }
 }
