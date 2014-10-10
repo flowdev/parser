@@ -21,7 +21,6 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
         int orgSrcPos = parserData.source().pos();
         List<ParseResult> subResults = new ArrayList<>(min(cfg.max(), 128));
         boolean matched = true;
-        boolean isOk = true;
 
         while (matched && subResults.size() < cfg.max()) {
             subOutPort.send(params.setParserData.set(data, parserData));
@@ -30,16 +29,12 @@ public class ParseMultiple<T> extends ParseWithSingleSubOp<T, ParseMultiple.Pars
             ParseResult result = parserData.result();
             matched = matched(result);
             if (matched) {
-                if (isOk(result)) {
-                    subResults.add(result);
-                } else {
-                    isOk = false;
-                }
+                subResults.add(result);
                 parserData.result(null);
             }
         }
 
-        if (isOk && subResults.size() >= cfg.min()) {
+        if (subResults.size() >= cfg.min()) {
             createMatchedResult(parserData, subResults, orgSrcPos);
         } else {
             createUnmatchedResult(parserData, orgSrcPos);
