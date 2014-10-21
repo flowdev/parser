@@ -4,7 +4,7 @@ import org.flowdev.base.Port;
 import org.flowdev.base.op.FilterOp;
 import org.flowdev.parser.data.ParserData;
 
-import static org.flowdev.parser.util.ParserUtil.matched;
+import static org.flowdev.parser.util.ParserUtil.*;
 
 public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserOp<T, C> {
     protected T dataFromSemantics;
@@ -20,8 +20,9 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
 
     protected T handleSemantics(T data) {
         ParserData parserData = params.getParserData.get(data);
+        parserData.result().feedback(collectFeedback(parserData.result(), parserData.subResults()));
         boolean matched = matched(parserData.result());
-        if (matched) {
+        if (matched && isOk(parserData.result())) {
             if (semOutPort != null) {
                 semOutPort.send(data);
                 data = dataFromSemantics;

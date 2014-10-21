@@ -5,6 +5,8 @@ import org.flowdev.parser.data.ParseResult;
 import org.flowdev.parser.data.ParserData;
 import org.flowdev.parser.data.SourceData;
 
+import java.util.List;
+
 public abstract class ParserUtil {
     public static void fillResultMatched(ParserData parserData, int len) {
         ParseResult result = parserData.result();
@@ -109,6 +111,30 @@ public abstract class ParserUtil {
     }
 
     public static boolean isOk(ParseResult result) {
-        return result.feedback() == null || result.feedback().errors() == null || result.feedback().errors().isEmpty();
+        return result.feedback() == null || result.feedback().errors().isEmpty();
+    }
+
+    public static Feedback collectFeedback(ParseResult mainResult, List<ParseResult> subResults) {
+        Feedback feedback = (mainResult.feedback() == null) ? new Feedback() : mainResult.feedback();
+        if (subResults != null) {
+            for (ParseResult subResult : subResults) {
+                collectFeedback(feedback, subResult);
+            }
+        }
+
+        if (feedback.errors().isEmpty() && feedback.infos().isEmpty() && feedback.warnings().isEmpty()) {
+            return null;
+        } else {
+            return feedback;
+        }
+    }
+
+    private static Feedback collectFeedback(Feedback feedback, ParseResult subResult) {
+        if (subResult.feedback() != null) {
+            feedback.infos().addAll(subResult.feedback().infos());
+            feedback.warnings().addAll(subResult.feedback().warnings());
+            feedback.errors().addAll(subResult.feedback().errors());
+        }
+        return feedback;
     }
 }
