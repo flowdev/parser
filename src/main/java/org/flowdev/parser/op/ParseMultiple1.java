@@ -30,9 +30,13 @@ public class ParseMultiple1<T> implements ParserOp<T, UseTextSemanticConfig> {
         return parseMultiple.getSemInPort();
     }
 
-    @Override
     public void setSemOutPort(Port<T> semOutPort) {
         parseMultiple.setSemOutPort(semOutPort);
+    }
+
+    public ParseMultiple1<T> withSemOutPort(Port<T> semOutPort) {
+        parseMultiple.setSemOutPort(semOutPort);
+        return this;
     }
 
     @Override

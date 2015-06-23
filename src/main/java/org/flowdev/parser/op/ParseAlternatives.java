@@ -42,9 +42,9 @@ public class ParseAlternatives<T> extends ParseWithMultipleSubOp<T, UseTextSeman
     }
 
     private int addFeedback(ParseResult result, Feedback allFeedback, int minErrPos) {
-        allFeedback.errors().addAll(result.feedback().errors());
-        allFeedback.warnings().addAll(result.feedback().warnings());
-        allFeedback.infos().addAll(result.feedback().infos());
+        allFeedback.getErrors().addAll(result.feedback().getErrors());
+        allFeedback.getWarnings().addAll(result.feedback().getWarnings());
+        allFeedback.getInfos().addAll(result.feedback().getInfos());
 
         return (result.errPos() < minErrPos) ? result.errPos() : minErrPos;
     }

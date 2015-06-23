@@ -1,6 +1,5 @@
 package org.flowdev.parser.op;
 
-
 import org.flowdev.base.Port;
 import org.flowdev.parser.data.UseTextSemanticConfig;
 
@@ -24,6 +23,11 @@ public class ParseMultiple0<T> implements ParserOp<T, UseTextSemanticConfig> {
         parseMultiple.setSubOutPort(subOutPort);
     }
 
+    public ParseMultiple0<T> withSubOutPort(Port<T> subOutPort) {
+        parseMultiple.setSubOutPort(subOutPort);
+        return this;
+    }
+
     @Override
     public Port<T> getSemInPort() {
         return parseMultiple.getSemInPort();
@@ -32,6 +36,11 @@ public class ParseMultiple0<T> implements ParserOp<T, UseTextSemanticConfig> {
     @Override
     public void setSemOutPort(Port<T> semOutPort) {
         parseMultiple.setSemOutPort(semOutPort);
+    }
+
+    public ParseMultiple0<T> withSemOutPort(Port<T> semOutPort) {
+        parseMultiple.setSemOutPort(semOutPort);
+        return this;
     }
 
     @Override
@@ -44,6 +53,11 @@ public class ParseMultiple0<T> implements ParserOp<T, UseTextSemanticConfig> {
         parseMultiple.setOutPort(outPort);
     }
 
+    public ParseMultiple0<T> withOutPort(Port<T> outPort) {
+        parseMultiple.setOutPort(outPort);
+        return this;
+    }
+
     @Override
     public Port<UseTextSemanticConfig> getConfigPort() {
         return configPort;
@@ -52,5 +66,10 @@ public class ParseMultiple0<T> implements ParserOp<T, UseTextSemanticConfig> {
     @Override
     public void setErrorPort(Port<Throwable> port) {
         parseMultiple.setErrorPort(port);
+    }
+
+    public ParseMultiple0<T> withErrorPort(Port<Throwable> port) {
+        parseMultiple.setErrorPort(port);
+        return this;
     }
 }

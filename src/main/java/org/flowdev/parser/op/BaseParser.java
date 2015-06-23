@@ -10,7 +10,7 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
     protected T dataFromSemantics;
 
     protected Port<T> semOutPort;
-    protected Port<T> semInPort = semInPort = (data) -> dataFromSemantics = data;
+    protected Port<T> semInPort = (data) -> dataFromSemantics = data;
 
     protected final ParserParams<T> params;
 
@@ -49,7 +49,16 @@ public abstract class BaseParser<T, C> extends FilterOp<T, C> implements ParserO
     /**
      * Called during initialization phase.
      */
+    @Override
     public void setSemOutPort(Port<T> semOutPort) {
         this.semOutPort = semOutPort;
+    }
+
+    /**
+     * Called during initialization phase.
+     */
+    public BaseParser<T, C> withSemOutPort(Port<T> semOutPort) {
+        this.semOutPort = semOutPort;
+        return this;
     }
 }

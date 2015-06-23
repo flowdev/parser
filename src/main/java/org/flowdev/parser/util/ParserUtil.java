@@ -19,7 +19,7 @@ public abstract class ParserUtil {
     public static void fillResultUnmatched(ParserData parserData, int pos, String message) {
         int errPos = parserData.source().pos() + pos;
         Feedback feedback = new Feedback();
-        feedback.errors().add(where(parserData.source(), errPos) + message);
+        feedback.getErrors().add(where(parserData.source(), errPos) + message);
 
         fillResultUnmatchedAbsolut(parserData, errPos, feedback);
     }
@@ -30,7 +30,7 @@ public abstract class ParserUtil {
         }
         parserData.source().pos(parserData.result().pos());
         parserData.result().errPos(parserData.result().pos()).text(null).value(null).feedback()
-                .errors().add(where(parserData.source(), parserData.result().errPos()) + message);
+                .getErrors().add(where(parserData.source(), parserData.result().errPos()) + message);
     }
 
     public static void addSemanticError(ParserData parserData, int pos, String message) {
@@ -38,7 +38,7 @@ public abstract class ParserUtil {
             parserData.result().feedback(new Feedback());
         }
         parserData.result().text(null).value(null).feedback()
-                .errors().add(where(parserData.source(), pos) + message);
+                .getErrors().add(where(parserData.source(), pos) + message);
     }
 
     public static void fillResultUnmatchedAbsolut(ParserData parserData, int errPos, Feedback feedback) {
@@ -111,7 +111,7 @@ public abstract class ParserUtil {
     }
 
     public static boolean isOk(ParseResult result) {
-        return result.feedback() == null || result.feedback().errors().isEmpty();
+        return result.feedback() == null || result.feedback().getErrors().isEmpty();
     }
 
     public static Feedback collectFeedback(ParseResult mainResult, List<ParseResult> subResults) {
@@ -122,7 +122,7 @@ public abstract class ParserUtil {
             }
         }
 
-        if (feedback.errors().isEmpty() && feedback.infos().isEmpty() && feedback.warnings().isEmpty()) {
+        if (feedback.getErrors().isEmpty() && feedback.getInfos().isEmpty() && feedback.getWarnings().isEmpty()) {
             return null;
         } else {
             return feedback;
@@ -131,9 +131,9 @@ public abstract class ParserUtil {
 
     private static Feedback collectFeedback(Feedback feedback, ParseResult subResult) {
         if (subResult.feedback() != null) {
-            feedback.infos().addAll(subResult.feedback().infos());
-            feedback.warnings().addAll(subResult.feedback().warnings());
-            feedback.errors().addAll(subResult.feedback().errors());
+            feedback.getInfos().addAll(subResult.feedback().getInfos());
+            feedback.getWarnings().addAll(subResult.feedback().getWarnings());
+            feedback.getErrors().addAll(subResult.feedback().getErrors());
         }
         return feedback;
     }
